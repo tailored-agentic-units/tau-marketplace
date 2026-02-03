@@ -1,0 +1,11 @@
+{
+  "name": "tau",
+  "description": "Core plugin for the Tailored Agentic Units ecosystem",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tailored-agentic-units/tau-marketplace",
+  "repository": "https://github.com/tailored-agentic-units/tau-marketplace",
+  "author": {
+    "name": "tailored-agentic-units",
+    "url": "https://github.com/tailored-agentic-units"
+  }
+}

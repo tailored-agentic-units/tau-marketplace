@@ -1,0 +1,16 @@
+{
+  "name": "tau-marketplace",
+  "owner": {
+    "name": "tailored-agentic-units"
+  },
+  "metadata": {
+    "description": "Plugin marketplace for the Tailored Agentic Units ecosystem"
+  },
+  "plugins": [
+    {
+      "name": "tau",
+      "source": "./plugins/tau",
+      "description": "Core plugin for the TAU ecosystem"
+    }
+  ]
+}
