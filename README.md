@@ -16,10 +16,17 @@ Add the marketplace to your project's `.claude/settings.json`:
 
 ```json
 {
-  "extraKnownMarketplaces": [
-    "https://github.com/tailored-agentic-units/tau-marketplace"
-  ],
-  "enabledPlugins": ["tau"]
+  "extraKnownMarketplaces": {
+    "tau-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "tailored-agentic-units/tau-marketplace"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "tau@tau-marketplace": true
+  }
 }
 ```
 
