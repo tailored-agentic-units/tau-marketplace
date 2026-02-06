@@ -45,8 +45,9 @@ Concept Development → Phase Planning → Objective Planning → Task Execution
 ### Session Metadata
 
 1. **Phase name** — identified from the project board or collected from the user
-2. **Primary repository** — where Objectives will be created
-3. **PROJECT.md** — read from the primary repository for vision and architecture context
+2. **Version target** — the semantic version this phase builds toward (e.g., `v0.1.0`)
+3. **Primary repository** — where Objectives will be created
+4. **PROJECT.md** — read from the primary repository for vision and architecture context
 
 ### Workflow
 
@@ -108,6 +109,7 @@ EOF
 
 ### Outcomes
 
+- Version target established for the phase (used for dev pre-release tags)
 - Objectives created on the primary repository with the `objective` label
 - Objectives added to the project board and assigned to the phase
 - Each Objective has enough context to drive an Objective Planning session

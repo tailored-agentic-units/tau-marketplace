@@ -218,7 +218,17 @@ EOF
 )"
 ```
 
-#### 7d. Project-Management Update
+#### 7d. Dev Release
+
+After the PR is merged, create a dev release for the changed modules. Follow the
+dev release workflow in [release.md](release.md):
+
+1. Identify changed modules from the PR
+2. Tag in dependency order with the next `v<target>-dev.<NN>` version
+3. Cascade to dependent modules (update go.mod, re-tag)
+4. Clean up old dev releases (retain current + previous only)
+
+#### 7e. Project-Management Update
 
 - Update phase assignment if the work completes a phase milestone
 - Close the issue if all acceptance criteria are met (the PR close will handle this if `Closes #N` is in the body)

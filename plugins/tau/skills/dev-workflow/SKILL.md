@@ -118,7 +118,7 @@ See [project-review.md](references/project-review.md) for the full workflow.
 
 ### Release Session
 
-Finalizes a version by converting accumulated CHANGELOG entries, running validation, and creating a git tag. Dev-type references augment with tag format conventions (e.g., Go modules require a `v` prefix).
+Two release types: **dev releases** (per-PR pre-release tags like `v0.1.0-dev.03`) and **phase releases** (final version like `v0.1.0`). Dev releases are triggered as part of task execution closeout. Phase releases finalize a version by converting CHANGELOG entries, running validation, and tagging all phase modules. Dev-type references augment with tag format conventions (e.g., Go modules require a `v` prefix).
 
 **Skills loaded:** tau:github-cli, plus domain-specific skills based on development type
 
