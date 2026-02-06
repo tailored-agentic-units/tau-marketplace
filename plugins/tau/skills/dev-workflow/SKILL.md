@@ -1,21 +1,21 @@
 ---
 name: dev-workflow
-argument-hint: "[concept | task <issue-number> | review | release <version>]"
+argument-hint: "[concept | plan phase | plan objective <issue-number> | task <issue-number> | review | release <version>]"
 description: >
   REQUIRED for structured development workflow sessions.
   Use when the user asks to "start a session", "concept development",
-  "task execution", "project review", "start development", "create concept",
-  "review project", "session closeout", "tag a release", "create release",
-  or any structured development activity.
-  Triggers: session, concept, task execution, project review, implementation guide,
-  closeout, development workflow, start session, review session, concept session,
-  release, tag, version.
+  "plan phase", "plan objective", "task execution", "project review",
+  "start development", "create concept", "review project", "session closeout",
+  "tag a release", "create release", or any structured development activity.
+  Triggers: session, concept, plan, planning, phase planning, objective planning,
+  task execution, project review, implementation guide, closeout, development workflow,
+  start session, review session, concept session, release, tag, version.
 
   When this skill is invoked, identify the session type from the argument
-  (concept, task, review, or release) and follow the corresponding workflow in the
-  references/ directory. Load the tau:project-management skill for concept development
-  and project review sessions. Load domain-specific skills for task execution and
-  release sessions.
+  (concept, plan, task, review, or release) and follow the corresponding workflow
+  in the references/ directory. Load the tau:project-management skill for concept
+  development, planning, and project review sessions. Load domain-specific skills
+  for task execution and release sessions.
 ---
 
 # Development Workflow
@@ -24,8 +24,9 @@ description: >
 
 **ALWAYS invoke this skill when the user's request involves ANY of these:**
 
-- Starting any structured development session (concept, task, review, or release)
+- Starting any structured development session (concept, plan, task, review, or release)
 - Creating or developing a new concept
+- Planning a phase (breaking it into objectives) or an objective (breaking it into sub-issues)
 - Executing a development task from a GitHub issue
 - Reviewing project infrastructure and codebase health
 - Tagging a release
@@ -41,6 +42,8 @@ Before starting a session, collect the required metadata based on session type.
 | Pattern | Session Type | Example |
 |---------|-------------|---------|
 | `/dev-workflow concept` | Concept Development | `/dev-workflow concept` |
+| `/dev-workflow plan phase` | Phase Planning | `/dev-workflow plan phase` |
+| `/dev-workflow plan objective <issue>` | Objective Planning | `/dev-workflow plan objective 5` |
 | `/dev-workflow task <issue-number>` | Task Execution | `/dev-workflow task 42` |
 | `/dev-workflow review` | Project Review | `/dev-workflow review` |
 | `/dev-workflow release <version>` | Release | `/dev-workflow release v0.2.0` |
@@ -50,6 +53,17 @@ Before starting a session, collect the required metadata based on session type.
 1. **Concept name** - descriptive slug (e.g., `audio-protocol`). Derived from argument or collected from user.
 2. **Scope** - extend existing repository or initialize new project.
 3. **Target repositories** - which repos are affected by the concept.
+
+### Phase Planning
+
+1. **Phase name** - identified from the project board or collected from the user.
+2. **Primary repository** - where Objectives will be created.
+3. **PROJECT.md** - read from the primary repository for vision and architecture context.
+
+### Objective Planning
+
+1. **Issue number** - required, from argument. The Objective (parent issue) to plan.
+2. **Target repositories** - identified from the Objective body or collected from the user.
 
 ### Task Execution
 
@@ -68,11 +82,23 @@ Before starting a session, collect the required metadata based on session type.
 
 ### Concept Development Session
 
-Develops a new idea from rough concept to actionable plan with full project-management infrastructure. Produces a concept document and creates GitHub issues, phases, and milestones.
+Develops a new idea from rough concept to actionable plan with full project-management infrastructure. Produces a concept document and may establish new phases, repositories, or project structure.
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
 See [concept-development.md](references/concept-development.md) for the full workflow.
+
+### Planning Session
+
+Breaks down project structure into actionable units. Two variants:
+
+**Phase Planning** — Takes a phase and produces Objectives (parent issues with the `objective` label). Each Objective represents a cohesive set of requirements within the phase. Objectives are created on the primary repository.
+
+**Objective Planning** — Takes an Objective and produces sub-issues across the relevant repositories. This is where architecture details are ironed out and the scope of each development session is defined. Each sub-issue maps to exactly one branch and one PR.
+
+**Skills loaded:** tau:project-management, tau:github-cli
+
+See [planning.md](references/planning.md) for the full workflow.
 
 ### Task Execution Session
 
@@ -156,6 +182,7 @@ A task execution session starts in plan mode (producing a plan file), then trans
 | Session Type | Always Loaded | Conditionally Loaded |
 |-------------|---------------|---------------------|
 | Concept Development | tau:project-management, tau:github-cli | Domain skills based on concept scope |
+| Planning | tau:project-management, tau:github-cli | Domain skills for architecture context |
 | Task Execution | tau:github-cli | Dev-type skills (e.g., tau:go-patterns), domain skills based on issue labels |
 | Project Review | tau:project-management, tau:github-cli | Domain skills for codebase assessment |
 | Release | tau:github-cli | Dev-type skills for tag format and validation |

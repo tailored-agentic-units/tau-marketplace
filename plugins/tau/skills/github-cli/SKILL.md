@@ -8,7 +8,7 @@ description: >
   gh CLI operation.
   Triggers: issue, PR, pull request, release, GitHub, gh command, repository,
   milestone, label, assignee, workflow, actions, gist, secret, variable,
-  discussion.
+  discussion, sub-issue, parent issue.
 
   When this skill is invoked, use the gh CLI to execute the requested operation.
   Always use --json flag for structured output when parsing is needed.
@@ -34,6 +34,7 @@ Perform GitHub repository operations using the `gh` CLI.
 - Creating **gists**
 - Direct **GitHub API** calls (REST or GraphQL)
 - Managing **labels**, **milestones**, or **assignees**
+- Managing **sub-issues** and **parent issue** relationships (via GraphQL API)
 
 > **Scope boundary**: For GitHub Projects v2 (project boards, phases, cross-repo backlogs),
 > use the **tau:project-management** skill instead.
@@ -53,6 +54,7 @@ Each `gh` subcommand has detailed documentation in its reference file:
 | `gh gist` | Create, list, view gists | [gist.md](references/gist.md) |
 | `gh label` | Create, list, edit, delete, clone labels | [label.md](references/label.md) |
 | Discussions | Create, list, view, update, close, comment (via GraphQL) | [discussion.md](references/discussion.md) |
+| Sub-issues | Add, list, remove, reprioritize sub-issues (via GraphQL) | [sub-issue.md](references/sub-issue.md) |
 | `gh secret` | Set, list, delete secrets (repo, env, org) | [secret.md](references/secret.md) |
 | `gh variable` | Set, get, list, delete variables (repo, env, org) | [variable.md](references/variable.md) |
 

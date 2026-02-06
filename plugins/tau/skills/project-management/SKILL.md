@@ -6,8 +6,8 @@ description: >
   Use when the user asks to "create a project", "list projects", "add phase",
   "assign phase", "view backlog", "bootstrap project", "link repo to project",
   "move items between phases", or any gh project operation.
-  Triggers: project, phase, backlog, board, project management, sprint, milestone,
-  roadmap, cross-repo, project item, project field.
+  Triggers: project, phase, objective, backlog, board, project management, milestone,
+  roadmap, cross-repo, project item, project field, sub-issue.
 
   When this skill is invoked, use the gh project CLI to execute the requested
   operation. Always use --format json with --jq for structured output when
@@ -34,8 +34,9 @@ Manage GitHub Projects v2, phases, and cross-repo backlogs using the `gh project
 - Creating, listing, viewing, editing, closing, or deleting **projects**
 - Linking or unlinking **repositories** to/from a project
 - Creating or managing **phase fields** (SINGLE_SELECT fields on a project)
+- Creating or managing **objectives** (parent issues with cross-repo sub-issues)
 - Adding issues/PRs to a project or managing **backlog items**
-- Viewing or filtering items **by phase**
+- Viewing or filtering items **by phase** or **by objective**
 - **Bootstrapping** a new project with repos and phases
 - Moving items **between phases** or viewing **phase progress**
 - Any **cross-repo** project board operation
@@ -45,18 +46,48 @@ Manage GitHub Projects v2, phases, and cross-repo backlogs using the `gh project
 
 ## Concepts
 
-### Three-Tier Hierarchy
+### Four-Tier Hierarchy
 
 | Tier | GitHub Construct | Scope | Purpose |
 |------|-----------------|-------|---------|
-| **Project** | GitHub Projects v2 | Org or user | Cross-repo board |
-| **Phase** | SINGLE_SELECT custom field | Per project | Group items like milestones |
-| **Item** | Project item (issue/PR/draft) | Per project | Backlog entry |
+| **Project** | GitHub Projects v2 | Org or user | Cross-repo board tracking a holistic project |
+| **Phase** | SINGLE_SELECT custom field | Per project | Sequential development efforts toward the long-term vision |
+| **Objective** | Parent issue with sub-issues | Cross-repo | Aggregates related issues within a phase subsection |
+| **Issue** | Repository issue | Per repo | Individual development task (one branch, one PR) |
 
 ### Phase as Cross-Repo Milestone
 
 Phases use a SINGLE_SELECT field on the project to group items from any linked repo.
-Example phases: "Backlog", "Phase 1 - Foundation", "v0.0.2", "Done".
+Example phases: "Backlog", "Phase 1 - Foundation", "Done".
+
+### Objective Convention
+
+An Objective is a parent issue that aggregates sub-issues across one or more repositories.
+Objectives represent a cohesive set of requirements within a phase — they are the bridge
+between high-level phase goals and individual development tasks.
+
+- Created on the **primary repository** with the `objective` label
+- Sub-issues are created on their **respective repositories** and linked via GraphQL API
+- Each sub-issue maps to exactly **one branch and one PR** on its repository
+- Development sessions focus on resolving **one sub-issue at a time**
+
+### Planning Lifecycle
+
+The four-tier hierarchy is populated through a top-down planning process:
+
+```
+Concept Development  →  creates phases, repos, project infrastructure
+Phase Planning       →  decomposes a phase into Objectives
+Objective Planning   →  decomposes an Objective into sub-issues (architecture decisions here)
+Task Execution       →  resolves a single sub-issue (one branch, one PR)
+```
+
+- **Phase Planning** produces Objectives on the primary repository
+- **Objective Planning** produces sub-issues across repos, irons out architecture details
+- **Task Execution** resolves one sub-issue per session
+
+See the **tau:dev-workflow** skill for planning session workflows.
+See [references/objective-management.md](references/objective-management.md) for GraphQL commands and patterns.
 
 ### Milestone Convention
 
@@ -97,6 +128,7 @@ All TAU Platform repositories use a shared label taxonomy focused on work type c
 | `documentation` | Documentation additions or updates | `0e8a16` |
 | `testing` | Test additions or improvements | `fbca04` |
 | `infrastructure` | CI/CD, build, tooling, project setup | `e4e669` |
+| `objective` | Parent issue aggregating cross-repo sub-issues | `5319e7` |
 
 See the bootstrap and clone label commands in [references/project-lifecycle.md](references/project-lifecycle.md).
 
@@ -107,6 +139,7 @@ See the bootstrap and clone label commands in [references/project-lifecycle.md](
 | Project CRUD | [project-lifecycle.md](references/project-lifecycle.md) | create, list, view, edit, close, delete, link/unlink repos |
 | Phase fields | [phase-management.md](references/phase-management.md) | field-create, field-list, field-delete, option management |
 | Backlog items | [backlog-management.md](references/backlog-management.md) | item-add, item-create, item-list, item-edit, archive |
+| Objectives | [objective-management.md](references/objective-management.md) | create objective, add/list/remove sub-issues, GraphQL API |
 | Multi-step flows | [composite-workflows.md](references/composite-workflows.md) | bootstrap project, bulk ops, progress views |
 | ID resolution | [id-resolution.md](references/id-resolution.md) | project ID, field ID, option ID, item ID patterns |
 

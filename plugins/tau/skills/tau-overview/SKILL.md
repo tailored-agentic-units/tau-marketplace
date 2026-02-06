@@ -17,13 +17,15 @@ Skills load automatically based on context:
 
 | Skill | Use When |
 |-------|----------|
-| tau:dev-workflow | Development sessions: concept development, task execution, project review, release |
-| tau:github-cli | GitHub repository operations via gh CLI (issues, PRs, releases, labels, secrets) |
+| tau:dev-workflow | Development sessions: concept development, planning, task execution, project review, release |
+| tau:github-cli | GitHub repository operations via gh CLI (issues, PRs, releases, labels, secrets, sub-issues) |
 | tau:go-patterns | Go design patterns: interfaces, error handling, package structure, configuration |
-| tau:project-management | GitHub Projects v2: project boards, phases, cross-repo backlog management |
+| tau:project-management | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog management |
 | tau:skill-creator | Creating or modifying Claude Code skills |
-| tau:tau-core | Building applications with tau-core: agents, protocols, providers, configuration |
-| tau:tau-orchestrate | Building applications with tau-orchestrate: hub coordination, state, workflows |
+| tau:tau-agent | Building with tau-agent: agent creation, protocols, providers, mock testing |
+| tau:tau-core | Building with tau-core: foundational types, protocols, responses, configuration |
+| tau:tau-orchestrate | Building with tau-orchestrate: hub coordination, state, workflows |
+| tau:tau-runtime | Building with tau-runtime: runtime architecture, ConnectRPC interface |
 
 ### Cross-Skill Integration
 
@@ -32,6 +34,7 @@ The `tau:dev-workflow` skill orchestrates structured development sessions that l
 | Session Type | Skills Loaded |
 |-------------|---------------|
 | Concept Development | tau:project-management, tau:github-cli |
+| Planning | tau:project-management, tau:github-cli |
 | Task Execution | tau:github-cli, tau:go-patterns, tau:skill-creator (+ dev-type references) |
 | Project Review | tau:project-management, tau:github-cli |
 | Release | tau:github-cli (+ dev-type references) |

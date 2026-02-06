@@ -14,14 +14,14 @@ Core Claude Code plugin for the Tailored Agentic Units ecosystem. Provides share
 
 | Skill | Description |
 |-------|-------------|
-| [dev-workflow](./skills/dev-workflow/) | Structured development sessions with four modes: concept development, task execution, project review, and release. Orchestrates other skills based on session type. |
+| [dev-workflow](./skills/dev-workflow/) | Structured development sessions: concept development, planning (phase and objective), task execution, project review, and release. Orchestrates other skills based on session type. |
 
 ### GitHub Operations
 
 | Skill | Description |
 |-------|-------------|
-| [github-cli](./skills/github-cli/) | GitHub repository operations via `gh` CLI — issues, pull requests, releases, labels, discussions, secrets, variables, workflows, gists, and API access. |
-| [project-management](./skills/project-management/) | GitHub Projects v2 — project boards, phase management, backlog operations, and composite workflows. Read-only `gh` operations; write operations require manual review. |
+| [github-cli](./skills/github-cli/) | GitHub repository operations via `gh` CLI — issues, pull requests, releases, labels, discussions, secrets, variables, workflows, gists, sub-issues, and API access. |
+| [project-management](./skills/project-management/) | GitHub Projects v2 — project boards, phase management, objectives, backlog operations, and composite workflows. |
 
 ### Code Patterns
 
@@ -33,8 +33,10 @@ Core Claude Code plugin for the Tailored Agentic Units ecosystem. Provides share
 
 | Skill | Description |
 |-------|-------------|
-| [tau-core](./skills/tau-core/) | Building applications with `tau-core` — agent creation, protocol execution (Chat, Vision, Tools, Embeddings), provider configuration, response handling, and error patterns. |
-| [tau-orchestrate](./skills/tau-orchestrate/) | Building applications with `tau-orchestrate` — hub coordination, messaging patterns, state graphs, workflow composition (sequential, parallel, conditional), and observability. |
+| [tau-agent](./skills/tau-agent/) | Building with `tau-agent` — agent creation, protocol execution (Chat, Vision, Tools, Embeddings), provider setup (Ollama, Azure), mock testing. |
+| [tau-core](./skills/tau-core/) | Building with `tau-core` — foundational types: protocol constants, response types, configuration structures, model types. |
+| [tau-orchestrate](./skills/tau-orchestrate/) | Building with `tau-orchestrate` — hub coordination, messaging patterns, state graphs, workflow composition (sequential, parallel, conditional), and observability. |
+| [tau-runtime](./skills/tau-runtime/) | Building with `tau-runtime` — runtime architecture, ConnectRPC interface, extension ecosystem, library composition. |
 
 ### Skill Authoring
 
@@ -49,6 +51,7 @@ The `dev-workflow` skill acts as an orchestrator, loading other skills based on 
 | Session Type | Skills Loaded |
 |-------------|---------------|
 | Concept Development | project-management, github-cli |
+| Planning | project-management, github-cli |
 | Task Execution | github-cli, go-patterns, skill-creator, plus dev-type references |
 | Project Review | project-management, github-cli |
 | Release | github-cli, plus dev-type references |
@@ -85,7 +88,7 @@ The plugin includes a `.lsp.json` configuration for Go development using `gopls`
 
 | Location | Pattern | Example | Purpose |
 |----------|---------|---------|---------|
-| Plugin skill | `tau-[lib]` | `tau-core`, `tau-orchestrate` | Library usage guide (building WITH the library) |
-| Repo skill | `tau-[lib]-dev` | `tau-core-dev`, `tau-orchestrate-dev` | Contributing guide (developing the library itself) |
+| Plugin skill | `tau-[lib]` | `tau-core`, `tau-agent` | Library usage guide (building WITH the library) |
+| Repo skill | `tau-[lib]-dev` | `tau-core-dev`, `tau-agent-dev` | Contributing guide (developing the library itself) |
 
 Plugin skills ship in this marketplace. Repo-level `-dev` skills remain in their respective repositories and provide contributor-specific context (architecture, testing conventions, extension patterns).

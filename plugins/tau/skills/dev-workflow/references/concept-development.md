@@ -37,23 +37,22 @@ Develop a new idea or capability from rough concept to actionable plan with full
 
 Determine whether the concept extends an existing repository or requires a new project.
 
-**If extending an existing repository:**
-
-1. Create GitHub issues with descriptive titles and bootstrap context in the body
-2. Apply standard labels from the label taxonomy (see tau:project-management skill)
-3. Add issues to the project board
-4. Assign issues to the appropriate phase
-5. Assign corresponding milestones on the repository
-
-**If initializing a new project:**
+**If initializing a new project (do first if applicable):**
 
 1. Create the repository
 2. Bootstrap standard labels (see tau:project-management skill: Label Convention)
 3. Link repository to the project board
 4. Create the Phase field if it doesn't exist, or add new phase options
-5. Create milestones matching the phases
-6. Create GitHub issues for all identified work items
-7. Add issues to the project board and assign phases/milestones
+5. Create milestones matching the phases on linked repositories
+
+**Create Objectives with sub-issues:**
+
+1. Create an **Objective** (parent issue) on the primary repository for each cohesive set of requirements
+2. Create **sub-issues** on their respective repositories with bootstrap context in the body
+3. Link sub-issues to their Objective via the GraphQL API (see tau:project-management skill: Objective Convention)
+4. Apply standard labels from the label taxonomy
+5. Add Objectives and sub-issues to the project board
+6. Assign to the appropriate phase and corresponding milestones
 
 **Issue body convention:**
 
@@ -132,7 +131,9 @@ mkdir -p .claude/context/concepts
 At the end of a concept development session:
 
 - Concept document exists in `.claude/context/concepts/`
-- GitHub issues created with bootstrap context in bodies
+- Objectives created as parent issues with the `objective` label
+- Sub-issues created on respective repositories with bootstrap context in bodies
+- Sub-issues linked to their Objectives via GraphQL API
 - Issues added to the project board with phase assignments
 - Milestones created on affected repositories
 - Labels applied from standard taxonomy

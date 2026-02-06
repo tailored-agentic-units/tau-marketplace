@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Execute a development task driven by a GitHub issue, from planning through implementation to structured closeout. This workflow integrates Claude Code plan mode, implementation guides, and project-management updates.
+Execute a development task driven by a single GitHub issue, from planning through implementation to structured closeout. Each issue maps to exactly one branch and one pull request. Development sessions focus on resolving one issue at a time.
 
 ## Prerequisites
 

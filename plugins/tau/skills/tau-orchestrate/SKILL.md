@@ -39,7 +39,7 @@ import (
     "github.com/tailored-agentic-units/tau-orchestrate/pkg/config"
     "github.com/tailored-agentic-units/tau-orchestrate/pkg/hub"
     "github.com/tailored-agentic-units/tau-orchestrate/pkg/messaging"
-    "github.com/tailored-agentic-units/tau-core/pkg/agent"
+    "github.com/tailored-agentic-units/tau-agent/pkg/agent"
 )
 
 ctx := context.Background()
@@ -288,7 +288,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/tailored-agentic-units/tau-core/pkg/agent"
+    "github.com/tailored-agentic-units/tau-agent/pkg/agent"
     "github.com/tailored-agentic-units/tau-core/pkg/config"
     "github.com/tailored-agentic-units/tau-orchestrate/pkg/workflows"
     orchConfig "github.com/tailored-agentic-units/tau-orchestrate/pkg/config"
@@ -555,15 +555,17 @@ override := config.ParallelConfig{MaxWorkers: 4}
 merged := base.Merge(&override)
 ```
 
-### Relationship to tau-core
+### Relationship to tau-agent and tau-core
 
-tau-orchestrate extends tau-core with coordination primitives. tau-core provides LLM protocol execution (Chat, Vision, Tools, Embeddings). tau-orchestrate provides the orchestration layer:
+tau-orchestrate extends the TAU ecosystem with coordination primitives. tau-agent provides LLM protocol execution (Chat, Vision, Tools, Embeddings). tau-core provides the foundational types (config, protocol, response). tau-orchestrate provides the orchestration layer:
 
-- **tau-core agents** satisfy `hub.Agent` interface directly
-- **Hub handlers** call tau-core agent methods for LLM processing
-- **Workflow processors** use tau-core agents for each step
-- **State graphs** compose tau-core calls into multi-step workflows
+- **tau-agent agents** satisfy `hub.Agent` interface directly
+- **Hub handlers** call tau-agent methods for LLM processing
+- **Workflow processors** use tau-agent for each step
+- **State graphs** compose tau-agent calls into multi-step workflows
+- **Config types** come from tau-core (AgentConfig, ProviderConfig, etc.)
 
 ## Related Skills
 
-- **tau:tau-core** - Core agent creation, protocol usage, provider setup, and mock testing
+- **tau:tau-agent** — Agent creation, protocol execution, provider setup, mock testing
+- **tau:tau-core** — Foundational types: protocols, responses, configuration
