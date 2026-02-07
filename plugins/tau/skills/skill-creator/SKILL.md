@@ -32,11 +32,18 @@ Create and maintain Claude Code skills following project conventions.
 ```
 .claude/skills/<skill-name>/
 ├── SKILL.md               # Required: main instructions
-└── references/            # Optional: detailed reference docs
-    └── detailed-guide.md
+├── commands/              # Optional: invocable subcommand workflows
+│   └── deploy.md
+└── references/            # Optional: pure reference context
+    └── api-guide.md
 ```
 
-Each skill is a single directory. The `SKILL.md` file is the entrypoint. Supporting files in `references/` are loaded on demand when referenced from SKILL.md.
+Each skill is a single directory. The `SKILL.md` file is the entrypoint. Supporting files are organized by purpose:
+
+- **`commands/`** — Workflows the skill can be invoked to execute (e.g., init, deploy, review). Each file describes a distinct subcommand.
+- **`references/`** — Pure informational context (API docs, schemas, conventions). Not directly invocable.
+
+Skills without subcommands only need `references/`. Skills with subcommands should separate invocable workflows into `commands/` and keep pure context in `references/` (or other domain-specific directories like `dev-types/`).
 
 ## Creating a New Skill
 
@@ -160,9 +167,14 @@ description: Helps with GitHub stuff
 Reference them from SKILL.md so Claude knows when to load them:
 
 ```markdown
-## Additional Resources
+## Commands
 
-- For complete API details, see [reference.md](references/reference.md)
+- [Deploy — Push to staging](commands/deploy.md)
+- [Rollback — Revert a deployment](commands/rollback.md)
+
+## References
+
+- [API Guide — Endpoint documentation](references/api-guide.md)
 ```
 
 ## Project Patterns

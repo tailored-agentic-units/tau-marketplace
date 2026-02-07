@@ -13,7 +13,7 @@ description: >
 
   When this skill is invoked, identify the session type from the argument
   (concept, plan, task, review, or release) and follow the corresponding workflow
-  in the references/ directory. Load the tau:project-management skill for concept
+  in the commands/ directory. Load the tau:project-management skill for concept
   development, planning, and project review sessions. Load domain-specific skills
   for task execution and release sessions.
 ---
@@ -68,7 +68,7 @@ Before starting a session, collect the required metadata based on session type.
 ### Task Execution
 
 1. **Issue number** - required, from argument. Read the issue to bootstrap session context.
-2. **Development type** - auto-detected from issue labels or collected. Determines which dev-type reference to load from `references/dev-types/`.
+2. **Development type** - auto-detected from issue labels or collected. Determines which dev-type reference to load from `dev-types/`.
 
 ### Project Review
 
@@ -86,7 +86,7 @@ Develops a new idea from rough concept to actionable plan with full project-mana
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
-See [concept-development.md](references/concept-development.md) for the full workflow.
+See [concept-development.md](commands/concept-development.md) for the full workflow.
 
 ### Planning Session
 
@@ -98,7 +98,7 @@ Breaks down project structure into actionable units. Two variants:
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
-See [planning.md](references/planning.md) for the full workflow.
+See [planning.md](commands/planning.md) for the full workflow.
 
 ### Task Execution Session
 
@@ -106,7 +106,7 @@ Issue-driven development session starting in Claude Code plan mode. Creates a br
 
 **Skills loaded:** tau:github-cli, plus domain-specific skills based on development type
 
-See [task-execution.md](references/task-execution.md) for the full workflow.
+See [task-execution.md](commands/task-execution.md) for the full workflow.
 
 ### Project Review Session
 
@@ -114,7 +114,7 @@ Evaluates the alignment between project-management infrastructure and the curren
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
-See [project-review.md](references/project-review.md) for the full workflow.
+See [project-review.md](commands/project-review.md) for the full workflow.
 
 ### Release Session
 
@@ -122,7 +122,7 @@ Two release types: **dev releases** (per-PR pre-release tags like `v0.1.0-dev.03
 
 **Skills loaded:** tau:github-cli, plus domain-specific skills based on development type
 
-See [release.md](./references/release.md) for the full workflow.
+See [release.md](commands/release.md) for the full workflow.
 
 ## Context Document Convention
 

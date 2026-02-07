@@ -8,7 +8,7 @@ Execute a development task driven by a single GitHub issue, from planning throug
 
 - Load skills: **tau:github-cli**, plus domain-specific skills based on development type
 - Collect session metadata: issue number (required), development type (auto-detect or collect)
-- Identify and load the appropriate dev-type reference from `references/dev-types/`
+- Identify and load the appropriate dev-type reference from `dev-types/`
 
 ## Development Type References
 
@@ -16,7 +16,8 @@ Dev-type references augment this workflow with type-specific conventions for imp
 
 Available dev-type references:
 
-- For Go library development, see [go-library.md](dev-types/go-library.md)
+- For Go library development, see [go-library.md](../dev-types/go-library.md)
+- For kernel development, see [kernel.md](../dev-types/kernel.md)
 
 Additional dev-type references are added incrementally as needed in the `dev-types/` directory.
 

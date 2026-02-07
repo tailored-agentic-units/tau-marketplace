@@ -1,4 +1,4 @@
-# Go Kernel Development
+# Kernel Development
 
 Development type reference for the TAU kernel monorepo. Augments the task execution workflow with kernel-specific conventions for implementation, testing, and validation.
 
