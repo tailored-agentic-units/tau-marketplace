@@ -96,23 +96,20 @@ Phases correspond to semantic version targets. Pre-release tags track progress d
 | Concept | Pattern | Example |
 |---------|---------|---------|
 | Phase target | `v<major>.<minor>.<patch>` | `v0.1.0` |
-| Dev pre-release | `v<phase-target>-dev.<NN>` | `v0.1.0-dev.01` |
-| Baseline | `v0.0.x` | `v0.0.2` (initial setup, pre-phase) |
+| Dev pre-release | `v<target>-dev.<objective>.<issue>` | `v0.1.0-dev.3.7` |
+| Baseline | `v0.0.x` | `v0.0.1` (initial setup, pre-phase) |
 
 **Dev release lifecycle:**
 
-- Each merged PR triggers a dev version bump for the modules that changed
-- Dev numbers are sequential per module per phase (e.g., `dev.01`, `dev.02`, `dev.03`)
-- Only **current + previous** dev releases are retained; older dev releases are deleted
-- When a downstream dependency gets a new dev tag, upstream modules update their `go.mod` and are re-tagged in the same operation (dependency cascade)
+- Each merged PR triggers a dev tag derived from the objective and issue numbers
+- Tags are deterministic: `v<target>-dev.<objective-number>.<issue-number>`
+- Dev releases accumulate during a phase and are cleaned up at phase release
 
 **Phase release:**
 
 - When all objectives in a phase are complete, the clean version is released (e.g., `v0.1.0`)
 - All remaining dev releases for that phase are deleted
 - CHANGELOG entries accumulated under `## Current` are converted to the versioned entry
-
-**Go module proxy note:** The Go module proxy (`proxy.golang.org`) caches versions permanently once fetched. Deleted dev tags may persist in the proxy cache but won't cause issues since no `go.mod` will reference them after cascade updates.
 
 See the **tau:dev-workflow** release reference for tagging workflows.
 

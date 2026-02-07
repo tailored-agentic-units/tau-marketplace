@@ -22,10 +22,7 @@ Skills load automatically based on context:
 | tau:go-patterns | Go design patterns: interfaces, error handling, package structure, configuration |
 | tau:project-management | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog management |
 | tau:skill-creator | Creating or modifying Claude Code skills |
-| tau:tau-agent | Building with tau-agent: agent creation, protocols, providers, mock testing |
-| tau:tau-core | Building with tau-core: foundational types, protocols, responses, configuration |
-| tau:tau-orchestrate | Building with tau-orchestrate: hub coordination, state, workflows |
-| tau:tau-runtime | Building with tau-runtime: runtime architecture, ConnectRPC interface |
+| tau:kernel | Building with the TAU kernel: core types, agent, orchestrate, ConnectRPC interface |
 
 ### Cross-Skill Integration
 

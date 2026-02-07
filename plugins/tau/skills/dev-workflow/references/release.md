@@ -2,11 +2,11 @@
 
 ## Purpose
 
-Manage version releases across the TAU ecosystem. Two release types exist:
+Manage version releases for TAU ecosystem repositories. Two release types exist:
 
 | Type | Trigger | Version Pattern | Example |
 |------|---------|-----------------|---------|
-| **Dev Release** | PR merged during a phase | `v<target>-dev.<NN>` | `v0.1.0-dev.03` |
+| **Dev Release** | PR merged during a phase | `v<target>-dev.<objective>.<issue>` | `v0.1.0-dev.3.7` |
 | **Phase Release** | All phase objectives complete | `v<target>` | `v0.1.0` |
 
 ## Prerequisites
@@ -22,93 +22,46 @@ progress as PRs are merged throughout the phase.
 
 ```
 Phase Target: v0.1.0
+Objective #3: Kernel Core Loop (issues #7, #8, #12)
 
-PR #1 merged (tau-core)       → tau-core v0.1.0-dev.01
-PR #2 merged (tau-agent)      → tau-agent v0.1.0-dev.01
-PR #3 merged (tau-core)       → tau-core v0.1.0-dev.02
-                                 tau-agent v0.1.0-dev.02  (cascade: go.mod update)
-Phase complete                → tau-core v0.1.0, tau-agent v0.1.0
+Issue #7 merged → v0.1.0-dev.3.7
+Issue #8 merged → v0.1.0-dev.3.8
+Issue #12 merged → v0.1.0-dev.3.12
+Phase complete → v0.1.0
 ```
 
-**Numbering**: Dev numbers are sequential per module per phase (dev.01, dev.02, ...).
+**Numbering**: Dev tags encode the objective and issue numbers from the GitHub
+project hierarchy: `v<target>-dev.<objective-number>.<issue-number>`. Each tag
+is deterministic — derived from the work item, not a sequential counter.
 
-**Retention**: Only current + previous dev releases are kept. Older dev releases
-are deleted after each new dev tag.
+**Retention**: Dev releases accumulate during a phase and are cleaned up when
+the phase release is tagged.
 
 ---
 
 ## Dev Release
 
-Triggered after a PR is merged during active phase development. Only tag modules
-that changed in the PR, then cascade to dependent modules.
+Triggered after a PR is merged during active phase development.
 
-### Step 1: Identify Changed Modules
+### Step 1: Derive Tag from Issue Metadata
 
-Determine which modules were modified in the merged PR:
-
-```bash
-# From main after merge
-git diff HEAD~1 --name-only | cut -d/ -f1 | sort -u
-```
-
-### Step 2: Determine Next Dev Number
-
-For each changed module, find the current dev number and increment:
+The dev tag is deterministic — derived from the objective and issue numbers:
 
 ```bash
-cd <module-dir>
-git tag -l 'v<target>-dev.*' --sort=-v:refname | head -1
-# If v0.1.0-dev.02 → next is v0.1.0-dev.03
-# If no tags exist → start at v0.1.0-dev.01
+# Format: v<target>-dev.<objective-number>.<issue-number>
+# Example: working on Objective #3, Issue #7 for phase v0.1.0
+TAG="v0.1.0-dev.3.7"
 ```
 
-### Step 3: Tag in Dependency Order
-
-Tag modules bottom-up through the dependency chain:
-
-```
-tau-core (no TAU deps)
-  └→ tau-agent (depends on tau-core)
-       └→ tau-orchestrate (depends on tau-agent)
-```
-
-For each module, in order:
+### Step 2: Tag and Push
 
 ```bash
-cd <module-dir>
-
-# Update go.mod if a dependency was just tagged
-# (only needed for cascade — skip for the module that directly changed)
-go get github.com/tailored-agentic-units/<dep>@<new-dev-tag>
-go mod tidy
-
-# Commit dependency update if go.mod changed
-git add go.mod go.sum
-git commit -m "deps: <dep> <new-dev-tag>"
-
-# Tag and push
-git tag <new-dev-tag>
+git tag $TAG
 git push origin main
-git push origin <new-dev-tag>
+git push origin $TAG
 ```
 
-### Step 4: Clean Up Old Dev Releases
-
-After tagging, delete dev releases older than previous. For each tagged module:
-
-```bash
-# List dev tags for this phase target, oldest first
-TAGS=$(git tag -l 'v<target>-dev.*' --sort=v:refname)
-
-# Keep the last 2 (current + previous), delete the rest
-echo "$TAGS" | head -n -2 | while read tag; do
-  gh release delete "$tag" --repo <owner>/<repo> --yes 2>/dev/null
-  git push origin --delete "$tag"
-  git tag -d "$tag"
-done
-```
-
-### Step 5: Verify
+### Step 3: Verify
 
 ```bash
 # Confirm the tag resolves on the Go module proxy
@@ -119,8 +72,7 @@ GOPROXY=https://proxy.golang.org go list -m <module>@<new-dev-tag>
 
 ## Phase Release
 
-Triggered when all objectives in a phase are complete. Converts dev pre-releases
-into clean versioned releases.
+Triggered when all objectives in a phase are complete.
 
 ### Collect Session Metadata
 
@@ -129,13 +81,11 @@ into clean versioned releases.
 
 ### Step 1: Validate
 
-Run the dev-type validation checklist across all modules that changed during
-the phase. All quality gates must pass before proceeding.
+Run the dev-type validation checklist. All quality gates must pass before proceeding.
 
-### Step 2: Update CHANGELOGs
+### Step 2: Update CHANGELOG
 
-For each module being released, replace the `## Current` header with the version
-and current date:
+Replace the `## Current` header with the version and current date:
 
 ```markdown
 ## v0.1.0 - 2026-02-15
@@ -148,27 +98,16 @@ git describe --tags --abbrev=0
 git log $(git describe --tags --abbrev=0)..HEAD --oneline
 ```
 
-Commit CHANGELOG updates:
+Commit CHANGELOG update:
 
 ```bash
 git add CHANGELOG.md
 git commit -m "release: <version>"
 ```
 
-### Step 3: Tag in Dependency Order
-
-Same bottom-up dependency order as dev releases. For each module:
+### Step 3: Tag and Push
 
 ```bash
-cd <module-dir>
-
-# Update go.mod to use the clean version of dependencies
-go get github.com/tailored-agentic-units/<dep>@<version>
-go mod tidy
-
-git add go.mod go.sum
-git commit -m "deps: <dep> <version>"
-
 git tag <version>
 git push origin main
 git push origin <version>
@@ -189,7 +128,7 @@ done
 ### Step 5: Verify
 
 ```bash
-# Confirm each module resolves on the proxy
+# Confirm the module resolves on the proxy
 GOPROXY=https://proxy.golang.org go list -m <module>@<version>
 
 # Confirm the tag exists on remote
@@ -203,18 +142,16 @@ Dev-type references may specify additional conventions:
 | Convention | Example |
 |-----------|---------|
 | Tag format | Go modules require `v` prefix (`v1.0.0`) |
-| Validation commands | `go vet ./...`, `go test ./tests/...` |
+| Validation commands | `go vet ./...`, `go test ./...` |
 | Post-release steps | Module proxy warmup, documentation updates |
 
 ## Outcomes
 
 **Dev release:**
-- Changed modules tagged with next dev pre-release
-- Dependent modules cascaded and tagged
-- Old dev releases cleaned up (current + previous retained)
+- Module tagged with dev pre-release derived from objective and issue numbers
 
 **Phase release:**
-- All phase modules tagged with clean version
-- CHANGELOGs converted from `## Current` to versioned entries
+- Module tagged with clean version
+- CHANGELOG converted from `## Current` to versioned entry
 - All dev releases for the phase deleted
-- All validation checks passed before tags were created
+- All validation checks passed before tag was created
