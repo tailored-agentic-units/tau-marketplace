@@ -18,6 +18,7 @@ Evaluate the project-management infrastructure:
 - List projects and phases using the tau:project-management skill
 - List open issues across linked repositories
 - Verify label taxonomy consistency across repos (compare against standard labels)
+- Verify issue type assignments (all issues should have a type; Objectives = `Objective`, sub-issues = `Task` or `Bug`)
 - Check milestone alignment with phases (each non-meta phase should have a corresponding milestone on each linked repo)
 - Identify orphaned issues (open issues not on the project board)
 - Identify stale issues (open issues with no recent activity)
@@ -86,6 +87,7 @@ Create a review report at `.claude/context/reviews/[YYYY-MM-DD]-[scope].md`:
 | Project board | [OK / Needs attention] | [Details] |
 | Phases | [OK / Needs attention] | [Details] |
 | Labels | [OK / Needs attention] | [Details] |
+| Issue types | [OK / Needs attention] | [Details] |
 | Milestones | [OK / Needs attention] | [Details] |
 | Orphaned issues | [Count] | [Details] |
 

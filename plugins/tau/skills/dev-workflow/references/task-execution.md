@@ -41,7 +41,10 @@ gh issue view <number> --json title,body,labels,milestone,assignees
 
 2. Parse the issue body for context (scope, approach, dependencies, acceptance criteria)
 
-3. Create a branch from the issue:
+3. Verify the issue has a type assigned (the `gh` CLI does not expose issue types natively —
+   use the GraphQL query from the tau:github-cli issue-type reference if needed)
+
+4. Create a branch from the issue:
 
 ```bash
 git checkout -b <issue-number>-<title-slug>
@@ -49,9 +52,9 @@ git checkout -b <issue-number>-<title-slug>
 
 Branch naming: `[issue-number]-[title-slug]` in kebab-case. Example: `42-audio-protocol`
 
-4. Identify the development type from issue labels and load the corresponding dev-type reference
+5. Identify the development type from issue labels and load the corresponding dev-type reference
 
-5. Load domain skills specified by the dev-type reference (e.g., tau:go-patterns for Go development)
+6. Load domain skills specified by the dev-type reference (e.g., tau:go-patterns for Go development)
 
 ### Phase 2: Plan Mode Exploration
 

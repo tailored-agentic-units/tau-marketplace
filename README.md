@@ -10,27 +10,28 @@ Plugin marketplace for the [Tailored Agentic Units](https://github.com/tailored-
 
 ## Installation
 
-### 1. Register the marketplace
-
-Add the marketplace to your project's `.claude/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "tau-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "tailored-agentic-units/tau-marketplace"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "tau@tau-marketplace": true
-  }
-}
+```bash
+claude plugin marketplace add tailored-agentic-units/tau-marketplace
+claude plugin install tau@tau-marketplace
 ```
 
-### 2. Configure skill permissions
+## Update
+
+```bash
+claude plugin marketplace update
+claude plugin update tau@tau-marketplace
+```
+
+## Remove
+
+```bash
+claude plugin remove tau@tau-marketplace
+claude plugin marketplace remove tailored-agentic-units/tau-marketplace
+```
+
+## Configuration
+
+### 1. Configure skill permissions
 
 Plugin skills are namespaced with `tau:`. Add the skills your project needs to the `permissions.allow` array:
 
@@ -79,10 +80,6 @@ Here is a full `.claude/settings.json` for a TAU Go library project:
 ```json
 {
   "plansDirectory": "./.claude/plans",
-  "extraKnownMarketplaces": [
-    "https://github.com/tailored-agentic-units/tau-marketplace"
-  ],
-  "enabledPlugins": ["tau"],
   "permissions": {
     "allow": [
       "Bash(gh auth status*)",

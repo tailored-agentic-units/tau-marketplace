@@ -161,10 +161,11 @@ End-to-end workflow for creating an objective and linking cross-repo sub-issues.
 OWNER="tailored-agentic-units"
 
 # 1. Create the objective (parent issue) on the primary repo
+#    Objectives only receive the 'objective' label — no category or package labels
 OBJECTIVE_URL=$(gh issue create \
   --repo "$OWNER/<primary-repo>" \
   --title "Objective: <title>" \
-  --label feature \
+  --label objective \
   --milestone "<phase-name>" \
   --body "$(cat <<'EOF'
 ## Objective
@@ -179,11 +180,21 @@ EOF
 
 PARENT_ID=$(gh issue view "$OBJECTIVE_URL" --json id --jq '.id')
 
-# 2. Create sub-issues on their respective repos
+# 2. Assign the Objective issue type (requires admin:org scope)
+#    Get the Objective type ID: gh api graphql -f query='{ organization(login: "'"$OWNER"'") { issueTypes(first: 25) { nodes { id name } } } }'
+gh api graphql -f query='
+mutation($issueId: ID!, $typeId: ID!) {
+  updateIssueIssueType(input: { issueId: $issueId, issueTypeId: $typeId }) {
+    issue { number issueType { name } }
+  }
+}' -f issueId="$PARENT_ID" -f typeId="<objective-type-id>"
+
+# 3. Create sub-issues on their respective repos
+#    Sub-issues receive category label(s) and package label(s) — not 'objective'
 CHILD_URL=$(gh issue create \
   --repo "$OWNER/<child-repo>" \
   --title "<sub-issue title>" \
-  --label feature \
+  --label "<category>" --label "<package>" \
   --milestone "<phase-name>" \
   --body "$(cat <<'EOF'
 ## Context
@@ -196,7 +207,17 @@ CHILD_URL=$(gh issue create \
 EOF
 )" --json url --jq '.url')
 
-# 3. Link sub-issue to objective
+CHILD_ID=$(gh issue view "$CHILD_URL" --json id --jq '.id')
+
+# 4. Assign the Task issue type to the sub-issue
+gh api graphql -f query='
+mutation($issueId: ID!, $typeId: ID!) {
+  updateIssueIssueType(input: { issueId: $issueId, issueTypeId: $typeId }) {
+    issue { number issueType { name } }
+  }
+}' -f issueId="$CHILD_ID" -f typeId="<task-type-id>"
+
+# 5. Link sub-issue to objective
 gh api graphql \
   -H "GraphQL-Features: sub_issues" \
   -f query='mutation($parentId: ID!, $childUrl: URI!) {
@@ -205,6 +226,6 @@ gh api graphql \
     }
   }' -f parentId="$PARENT_ID" -f childUrl="$CHILD_URL"
 
-# 4. Add objective to project board and assign phase
+# 6. Add objective to project board and assign phase
 # (see backlog-management.md and phase assignment patterns)
 ```

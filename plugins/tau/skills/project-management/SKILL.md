@@ -66,8 +66,9 @@ An Objective is a parent issue that aggregates sub-issues across one or more rep
 Objectives represent a cohesive set of requirements within a phase — they are the bridge
 between high-level phase goals and individual development tasks.
 
-- Created on the **primary repository** with the `objective` label
+- Created on the **primary repository** with the `objective` label and `Objective` issue type
 - Sub-issues are created on their **respective repositories** and linked via GraphQL API
+- Sub-issues are assigned the `Task` issue type (or `Bug` for defect fixes)
 - Each sub-issue maps to exactly **one branch and one PR** on its repository
 - Development sessions focus on resolving **one sub-issue at a time**
 
@@ -137,9 +138,33 @@ item URL -------> item ID           (gh project item-add --format json)
 All IDs are opaque strings (e.g., `PVT_...`, `PVTSSF_...`, `PVTSO_...`, `PVTI_...`).
 See [references/id-resolution.md](references/id-resolution.md) for detailed patterns.
 
+## Issue Type Convention
+
+Issue types are an organization-level feature that categorize every issue. All issues
+must have a type assigned at creation time.
+
+### Standard Types
+
+| Type | Color | Purpose |
+|------|-------|---------|
+| **Bug** | RED | Something isn't working correctly |
+| **Task** | YELLOW | Individual development task |
+| **Objective** | BLUE | Parent issue that groups related work |
+
+Type management requires the `admin:org` token scope. See the **tau:github-cli** skill's
+[issue-type.md](../github-cli/references/issue-type.md) reference for GraphQL operations.
+
+### Type Assignment Rules
+
+- **Objectives** always get type `Objective`
+- **Sub-issues** get type `Task` (or `Bug` when fixing a defect)
+- The `gh issue create` CLI does not support a `--type` flag — assign types via GraphQL
+  after creation (see tau:github-cli issue-type reference)
+
 ## Label Convention
 
-All TAU Platform repositories use a shared label taxonomy focused on work type categorization.
+All TAU Platform repositories use a shared label taxonomy. Labels serve different
+purposes depending on the issue type.
 
 ### Standard Labels
 
@@ -153,6 +178,17 @@ All TAU Platform repositories use a shared label taxonomy focused on work type c
 | `testing` | Test additions or improvements | `fbca04` |
 | `infrastructure` | CI/CD, build, tooling, project setup | `e4e669` |
 | `objective` | Parent issue aggregating cross-repo sub-issues | `5319e7` |
+
+### Labeling Rules by Issue Type
+
+- **Objectives** receive only the `objective` label. No category or package labels.
+- **Sub-issues (Task/Bug)** receive:
+  - A **category** label describing the work type (e.g., `feature`, `refactor`, `testing`)
+  - One or more **package** labels identifying the affected packages (repo-specific,
+    e.g., `core`, `agent`, `orchestrate` for the kernel monorepo)
+
+Package labels are repo-specific and should be created as needed when bootstrapping
+a repository. They are not part of the standard label set.
 
 See the bootstrap and clone label commands in [references/project-lifecycle.md](references/project-lifecycle.md).
 

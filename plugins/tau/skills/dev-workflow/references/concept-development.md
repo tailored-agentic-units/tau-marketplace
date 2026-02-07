@@ -48,11 +48,13 @@ Determine whether the concept extends an existing repository or requires a new p
 **Create Objectives with sub-issues:**
 
 1. Create an **Objective** (parent issue) on the primary repository for each cohesive set of requirements
-2. Create **sub-issues** on their respective repositories with bootstrap context in the body
-3. Link sub-issues to their Objective via the GraphQL API (see tau:project-management skill: Objective Convention)
-4. Apply standard labels from the label taxonomy
-5. Add Objectives and sub-issues to the project board
-6. Assign to the appropriate phase and corresponding milestones
+2. Assign the `Objective` issue type and `objective` label — no other labels on Objectives
+3. Create **sub-issues** on their respective repositories with bootstrap context in the body
+4. Assign the `Task` issue type (or `Bug` for defects) to each sub-issue
+5. Apply category and package labels to sub-issues (see tau:project-management skill: Labeling Rules)
+6. Link sub-issues to their Objective via the GraphQL API (see tau:project-management skill: Objective Convention)
+7. Add Objectives and sub-issues to the project board
+8. Assign to the appropriate phase and corresponding milestones
 
 **Issue body convention:**
 
@@ -131,9 +133,8 @@ mkdir -p .claude/context/concepts
 At the end of a concept development session:
 
 - Concept document exists in `.claude/context/concepts/`
-- Objectives created as parent issues with the `objective` label
-- Sub-issues created on respective repositories with bootstrap context in bodies
+- Objectives created as parent issues with `Objective` issue type and `objective` label only
+- Sub-issues created on respective repositories with `Task` issue type, category/package labels, and bootstrap context
 - Sub-issues linked to their Objectives via GraphQL API
 - Issues added to the project board with phase assignments
 - Milestones created on affected repositories
-- Labels applied from standard taxonomy

@@ -73,10 +73,11 @@ Concept Development → Phase Planning → Objective Planning → Task Execution
 
 #### 4. Objective Creation
 
-Create each Objective as a parent issue on the primary repository:
+Create each Objective as a parent issue on the primary repository. Objectives receive
+only the `objective` label — no category or package labels.
 
 ```bash
-gh issue create \
+OBJECTIVE_URL=$(gh issue create \
   --repo <owner>/<primary-repo> \
   --title "Objective: <title>" \
   --label objective \
@@ -98,7 +99,16 @@ gh issue create \
 
 [Other objectives or prerequisites this depends on]
 EOF
-)"
+)" --json url --jq '.url')
+
+# Assign the Objective issue type
+ISSUE_ID=$(gh issue view "$OBJECTIVE_URL" --json id --jq '.id')
+gh api graphql -f query='
+mutation($issueId: ID!, $typeId: ID!) {
+  updateIssueIssueType(input: { issueId: $issueId, issueTypeId: $typeId }) {
+    issue { number issueType { name } }
+  }
+}' -f issueId="$ISSUE_ID" -f typeId="<objective-type-id>"
 ```
 
 #### 5. Project Board Updates
@@ -110,7 +120,7 @@ EOF
 ### Outcomes
 
 - Version target established for the phase (used for dev pre-release tags)
-- Objectives created on the primary repository with the `objective` label
+- Objectives created on the primary repository with the `objective` label and `Objective` issue type
 - Objectives added to the project board and assigned to the phase
 - Each Objective has enough context to drive an Objective Planning session
 
@@ -154,14 +164,15 @@ EOF
 
 #### 4. Sub-Issue Creation
 
-Create sub-issues on their respective repositories and link to the Objective:
+Create sub-issues on their respective repositories and link to the Objective. Sub-issues
+receive category label(s) and package label(s) — not the `objective` label.
 
 ```bash
 # Create sub-issue on the target repo
 CHILD_URL=$(gh issue create \
   --repo <owner>/<target-repo> \
   --title "<sub-issue title>" \
-  --label <label> \
+  --label "<category>" --label "<package>" \
   --milestone "<phase-name>" \
   --body "$(cat <<'EOF'
 ## Context
@@ -181,6 +192,15 @@ CHILD_URL=$(gh issue create \
 - [ ] [Specific, verifiable criteria]
 EOF
 )" --json url --jq '.url')
+
+# Assign the Task issue type (or Bug for defect fixes)
+CHILD_ID=$(gh issue view "$CHILD_URL" --json id --jq '.id')
+gh api graphql -f query='
+mutation($issueId: ID!, $typeId: ID!) {
+  updateIssueIssueType(input: { issueId: $issueId, issueTypeId: $typeId }) {
+    issue { number issueType { name } }
+  }
+}' -f issueId="$CHILD_ID" -f typeId="<task-type-id>"
 
 # Link to the Objective
 PARENT_ID=$(gh issue view <objective-number> --repo <owner>/<primary-repo> --json id --jq '.id')
@@ -202,6 +222,6 @@ gh api graphql \
 ### Outcomes
 
 - Sub-issues created on their respective repositories with bootstrap context
-- Sub-issues linked to the Objective via GraphQL API
+- Sub-issues assigned the `Task` (or `Bug`) issue type and linked to the Objective via GraphQL API
 - Each sub-issue has enough context to drive a Task Execution session
 - Architecture decisions documented in the sub-issue bodies
