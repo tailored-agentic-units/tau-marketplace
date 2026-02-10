@@ -70,12 +70,14 @@ When creating the implementation guide (Phase 3), apply these conventions:
 
 ## Testing Strategy
 
-During Phase 5 (Validation), the AI implements and runs all testing:
+During Phase 5 (Testing), the AI implements and runs all testing:
 
 ### Test Organization
 
 - Tests co-located with source in each package
 - Example: `core/config/agent_test.go` tests `core/config/agent.go`
+
+Co-located `*_test.go` files are the Go-idiomatic standard — used by the Go standard library, Kubernetes, Docker, and virtually all major Go projects. `go test` and coverage tooling expect this layout. Separate `tests/` directories are explicitly not the pattern for unit tests. The `package_test` (external test package) suffix provides the meaningful separation — black-box testing of the public API — without physical directory separation.
 
 ### Black-Box Testing
 
@@ -121,6 +123,34 @@ server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *htt
 defer server.Close()
 ```
 
+### Asynchronous Test Synchronization
+
+Tests that verify asynchronous behavior (message delivery, handler invocation, goroutine coordination) must use channel-based synchronization — never `time.Sleep`.
+
+**Pattern:** Handler signals on a channel when invoked; test waits on channel with `select`/`time.After` deadline guard.
+
+```go
+handled := make(chan struct{}, 1)
+handler := func(msg Message) error {
+    // ... handler logic ...
+    handled <- struct{}{}
+    return nil
+}
+
+select {
+case <-handled:
+    // success — assert results
+case <-time.After(5 * time.Second):
+    t.Fatal("timed out waiting for handler")
+}
+```
+
+**Key principles:**
+- Channel signals replace `time.Sleep` for positive assertions (waiting for something to happen)
+- Safety-net timeouts (5s) are generous — they prevent hangs, not measure timing
+- For negative assertions (verifying something does NOT happen), use a short timeout (100-200ms) on channel receive
+- Buffered channels (`make(chan struct{}, 1)`) prevent goroutine leaks if the test exits early
+
 ### Coverage Expectations
 
 Focus on critical path coverage:
@@ -135,7 +165,7 @@ Uncovered code is acceptable when it consists of defensive error handling for OS
 
 ## Validation Checklist
 
-The AI runs through this checklist during Phase 5:
+The AI runs through this checklist during Phase 6 (Validation):
 
 - [ ] `go vet ./...` passes
 - [ ] All existing tests pass: `go test ./...`
@@ -150,10 +180,10 @@ The AI runs through this checklist during Phase 5:
 
 ## Closeout Augmentations
 
-During task execution Phase 7 (Closeout), add a CHANGELOG entry for the completed work:
+During task execution Phase 8 (Closeout), add a CHANGELOG entry for the completed work:
 
-- Add a summary line under the appropriate subsystem section in `CHANGELOG.md`
-- If no subsystem section exists under `## Current`, create it
+Add a summary line under the dev tag section created during closeout. The dev release step (Phase 8d) creates the `## v<target>-dev.<objective>.<issue>` section in `CHANGELOG.md` — the entry goes there, organized under the appropriate subsystem section.
+
 - Entry format: `- [Description of change] (#[issue-number])`
 
 ## Release Augmentations

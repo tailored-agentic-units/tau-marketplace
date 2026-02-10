@@ -27,8 +27,9 @@ Additional dev-type references are added incrementally as needed in the `dev-typ
 |-------|----------------------|
 | Phase 2: Plan Mode | Load domain skills specified by the dev-type reference |
 | Phase 3: Guide Creation | Apply dev-type file conventions and code patterns |
-| Phase 5: Validation | Execute dev-type testing strategy and validation checklist |
-| Phase 6: Documentation | Follow dev-type documentation conventions |
+| Phase 5: Testing | Execute dev-type testing strategy |
+| Phase 6: Validation | Execute dev-type validation checklist |
+| Phase 7: Documentation | Follow dev-type documentation conventions |
 
 ## Workflow
 
@@ -100,7 +101,9 @@ mkdir -p .claude/context/guides
 
 ### Step 1: [Description]
 
-[Step-by-step implementation instructions ordered by dependency level]
+[Complete implementation for this step. If the step affects multiple source files,
+show the implementation for each file. Provide actual code changes, not just
+descriptions of what should be updated.]
 
 ### Step 2: [Description]
 
@@ -118,8 +121,9 @@ mkdir -p .claude/context/guides
 
 **Code block conventions:**
 
-- **No godoc comments.** Godoc comments are added by the AI during Phase 6 (Documentation). Omitting them from the guide saves tokens and avoids maintenance.
-- **No unit tests.** Tests are implemented by the AI during Phase 5 (Validation). Do not include test code in the guide.
+- **No godoc comments.** Godoc comments are added by the AI during Phase 7 (Documentation). Omitting them from the guide saves tokens and avoids maintenance.
+- **No unit tests.** Test creation, maintenance, and updates are an AI responsibility during Phase 5 (Testing). Do not include any test-related steps in the guide.
+- **No project-management infrastructure updates.** Updates to `_project/README.md` known gaps, project board state, or similar infrastructure are an AI responsibility handled during closeout. Do not include them as implementation steps.
 - **Meaningful comments only.** Comments that help the developer understand intent, non-obvious logic, or integration context are encouraged. Boilerplate or self-evident comments should be omitted.
 
 Apply any additional file conventions specified by the dev-type reference.
@@ -132,9 +136,19 @@ Apply any additional file conventions specified by the dev-type reference.
 - AI remains available for mentorship, clarification, and adjustments
 - Focus on code structure and correctness
 
-### Phase 5: Validation
+### Phase 5: Testing
 
 Control transitions back to the AI for the remainder of the session.
+
+The AI implements and updates all tests for the new code:
+
+- Add tests for new exported API surfaces
+- Update existing tests affected by the implementation
+- Run the dev-type test suite and ensure all tests pass
+
+The dev-type reference defines the specific testing infrastructure, commands, and coverage expectations for this phase. The AI is responsible for all test authorship and execution.
+
+### Phase 6: Validation
 
 **Core validation (all development types):**
 
@@ -143,22 +157,19 @@ Control transitions back to the AI for the remainder of the session.
 
 **Dev-type validation (from the loaded dev-type reference):**
 
-- Execute the dev-type testing strategy (e.g., add/revise tests, run test suites)
-- Run through the dev-type validation checklist
+- Run through the dev-type validation checklist (vet, lint, tidy, etc.)
 - Ensure all dev-type quality gates pass before proceeding
 
-The dev-type reference defines the specific testing infrastructure, commands, and coverage expectations for this phase. The AI is responsible for implementing any testing changes required as a result of the implementation and ensuring all tests pass.
-
-### Phase 6: Documentation
+### Phase 7: Documentation
 
 - Add documentation comments to exported types, functions, and methods
 - Document non-obvious behavior or design decisions
 - Follow documentation conventions from the dev-type reference
 - Update relevant documentation files if the changes affect them
 
-### Phase 7: Closeout
+### Phase 8: Closeout
 
-#### 7a. Create Session Summary
+#### 8a. Create Session Summary
 
 Ensure the directory exists:
 
@@ -194,14 +205,14 @@ Create a session summary at `.claude/context/sessions/[issue-number]-[slug].md`:
 - [Test results, coverage metrics, manual verification]
 ```
 
-#### 7b. Archive Implementation Guide
+#### 8b. Archive Implementation Guide
 
 ```bash
 mkdir -p .claude/context/guides/.archive
 mv .claude/context/guides/[issue-number]-[slug].md .claude/context/guides/.archive/
 ```
 
-#### 7c. Pull Request
+#### 8c. Pull Request
 
 Commit all changes, push the branch to the remote, and create a PR:
 
@@ -228,17 +239,17 @@ EOF
 )"
 ```
 
-#### 7d. Dev Release
+#### 8d. Dev Release
 
 After the PR is merged, create a dev release for the changed modules. Follow the
 dev release workflow in [release.md](release.md):
 
 1. Identify changed modules from the PR
-2. Tag in dependency order with the next `v<target>-dev.<NN>` version
+2. Tag in dependency order with the next dev version
 3. Cascade to dependent modules (update go.mod, re-tag)
 4. Clean up old dev releases (retain current + previous only)
 
-#### 7e. Project-Management Update
+#### 8e. Project-Management Update
 
 - Update phase assignment if the work completes a phase milestone
 - Close the issue if all acceptance criteria are met (the PR close will handle this if `Closes #N` is in the body)

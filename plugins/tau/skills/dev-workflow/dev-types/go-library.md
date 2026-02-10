@@ -47,7 +47,7 @@ When creating the implementation guide (Phase 3), apply these conventions:
 
 ## Testing Strategy
 
-During Phase 5 (Validation), the AI implements and runs all testing:
+During Phase 5 (Testing), the AI implements and runs all testing:
 
 ### Test Organization
 
@@ -112,7 +112,7 @@ Uncovered code is acceptable when it consists of defensive error handling for OS
 
 ## Validation Checklist
 
-The AI runs through this checklist during Phase 5:
+The AI runs through this checklist during Phase 6 (Validation):
 
 - [ ] `go vet ./...` passes
 - [ ] All existing tests pass: `go test ./tests/...`
@@ -126,10 +126,10 @@ The AI runs through this checklist during Phase 5:
 
 ## Closeout Augmentations
 
-During task execution Phase 7 (Closeout), add a CHANGELOG entry for the completed work:
+During task execution Phase 8 (Closeout), add a CHANGELOG entry for the completed work:
 
-- Add a summary line under the `## Current` header in `CHANGELOG.md`
-- Create the `## Current` header if it does not exist (insert it after `# Changelog`)
+Add a summary line under the dev tag section created during closeout. The dev release step (Phase 8d) creates the `## v<target>-dev.<objective>.<issue>` section in `CHANGELOG.md` — the entry goes there.
+
 - Entry format: `- [Description of change] (#[issue-number])`
 
 ## Release Augmentations

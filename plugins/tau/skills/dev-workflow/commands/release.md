@@ -53,7 +53,18 @@ The dev tag is deterministic — derived from the objective and issue numbers:
 TAG="v0.1.0-dev.3.7"
 ```
 
-### Step 2: Tag and Push
+### Step 2: Update CHANGELOG
+
+Add a versioned section for this dev release to `CHANGELOG.md`:
+
+```markdown
+## v0.1.0-dev.3.7
+- [Description of change] (#7)
+```
+
+Insert the new section at the top of the CHANGELOG (below `# Changelog`). Commit the update before tagging.
+
+### Step 3: Tag and Push
 
 ```bash
 git tag $TAG
@@ -61,7 +72,7 @@ git push origin main
 git push origin $TAG
 ```
 
-### Step 3: Verify
+### Step 4: Verify
 
 ```bash
 # Confirm the tag resolves on the Go module proxy
@@ -85,18 +96,14 @@ Run the dev-type validation checklist. All quality gates must pass before procee
 
 ### Step 2: Update CHANGELOG
 
-Replace the `## Current` header with the version and current date:
+Consolidate all `## v<target>-dev.*` sections into a single versioned entry and delete them from the CHANGELOG:
 
 ```markdown
 ## v0.1.0 - 2026-02-15
+- All changes consolidated from dev releases...
 ```
 
-If `## Current` does not exist, analyze git history since the last release tag:
-
-```bash
-git describe --tags --abbrev=0
-git log $(git describe --tags --abbrev=0)..HEAD --oneline
-```
+After consolidation, no `## v<target>-dev.*` sections should remain in the file.
 
 Commit CHANGELOG update:
 
@@ -125,9 +132,9 @@ git push origin main
 git push origin <version>
 ```
 
-### Step 5: Clean Up Remaining Dev Releases
+### Step 5: Clean Up Dev Tags and Releases
 
-Delete all dev releases for this phase target:
+Delete all dev tags (local and remote) and any associated GitHub releases for this phase:
 
 ```bash
 git tag -l 'v<target>-dev.*' | while read tag; do
@@ -164,6 +171,6 @@ Dev-type references may specify additional conventions:
 
 **Phase release:**
 - Module tagged with clean version
-- CHANGELOG converted from `## Current` to versioned entry
+- Dev tag CHANGELOG sections consolidated into versioned entry
 - All dev releases for the phase deleted
 - All validation checks passed before tag was created
