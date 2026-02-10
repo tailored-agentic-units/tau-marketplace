@@ -47,13 +47,14 @@ Concept Development → Phase Planning → Objective Planning → Task Execution
 1. **Phase name** — identified from the project board or collected from the user
 2. **Version target** — the semantic version this phase builds toward (e.g., `v0.1.0`)
 3. **Primary repository** — where Objectives will be created
-4. **PROJECT.md** — read from the primary repository for vision and architecture context
+4. **`_project/README.md`** — read from the primary repository for vision and architecture context
 
 ### Workflow
 
 #### 1. Context Gathering
 
-- Read PROJECT.md from the primary repository for vision and architecture
+- Read `_project/README.md` from the primary repository for vision and architecture
+- Read `_project/phase.md` if it exists for current phase context
 - Review existing concept documents in `.claude/context/concepts/`
 - Review the project board: current phase items, backlog, existing objectives
 - Identify relevant domain skills and load them for architecture context
@@ -111,7 +112,16 @@ mutation($issueId: ID!, $typeId: ID!) {
 }' -f issueId="$ISSUE_ID" -f typeId="<objective-type-id>"
 ```
 
-#### 5. Project Board Updates
+#### 5. Update `_project/phase.md`
+
+Create or update `_project/phase.md` with:
+
+- Phase name and version target
+- Phase scope and goals
+- Objectives table (with status)
+- Constraints and cross-cutting decisions
+
+#### 6. Project Board Updates
 
 - Add each Objective to the project board
 - Assign to the appropriate phase
@@ -123,6 +133,7 @@ mutation($issueId: ID!, $typeId: ID!) {
 - Objectives created on the primary repository with the `objective` label and `Objective` issue type
 - Objectives added to the project board and assigned to the phase
 - Each Objective has enough context to drive an Objective Planning session
+- `_project/phase.md` created with phase scope, objectives, and version target
 
 ---
 
@@ -144,7 +155,8 @@ mutation($issueId: ID!, $typeId: ID!) {
 #### 1. Context Gathering
 
 - Read the Objective issue for scope, architecture context, and dependencies
-- Read PROJECT.md and relevant concept documents for broader context
+- Read `_project/README.md` and `_project/phase.md` for project and phase context
+- Review relevant concept documents in `.claude/context/concepts/`
 - Explore the affected repositories to understand current state
 - Load domain-specific skills for architecture decisions
 
@@ -213,7 +225,17 @@ gh api graphql \
   }' -f parentId="$PARENT_ID" -f childUrl="$CHILD_URL"
 ```
 
-#### 5. Project Board Updates
+#### 5. Update `_project/objective.md`
+
+Create or update `_project/objective.md` with:
+
+- Objective title and parent issue reference
+- Phase reference
+- Scope and acceptance criteria
+- Sub-issues table (with status)
+- Architecture decisions specific to this objective
+
+#### 6. Project Board Updates
 
 - Add each sub-issue to the project board
 - Assign to the same phase as the parent Objective
@@ -225,3 +247,4 @@ gh api graphql \
 - Sub-issues assigned the `Task` (or `Bug`) issue type and linked to the Objective via GraphQL API
 - Each sub-issue has enough context to drive a Task Execution session
 - Architecture decisions documented in the sub-issue bodies
+- `_project/objective.md` created with scope, sub-issues, and architecture decisions

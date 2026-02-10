@@ -58,7 +58,7 @@ Before starting a session, collect the required metadata based on session type.
 
 1. **Phase name** - identified from the project board or collected from the user.
 2. **Primary repository** - where Objectives will be created.
-3. **PROJECT.md** - read from the primary repository for vision and architecture context.
+3. **`_project/README.md`** - read from the primary repository for vision and architecture context.
 
 ### Objective Planning
 

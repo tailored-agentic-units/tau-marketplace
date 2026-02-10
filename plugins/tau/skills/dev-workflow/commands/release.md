@@ -105,7 +105,19 @@ git add CHANGELOG.md
 git commit -m "release: <version>"
 ```
 
-### Step 3: Tag and Push
+### Step 3: Archive Phase
+
+If this release completes a phase:
+
+```bash
+# Archive the current phase document
+PHASE_NUM=$(printf "%02d" <phase-number>)
+mv _project/phase.md _project/.archive/phase.${PHASE_NUM}.md
+```
+
+Update `_project/README.md` subsystem status if subsystems moved from skeleton to complete during this phase.
+
+### Step 4: Tag and Push
 
 ```bash
 git tag <version>
@@ -113,7 +125,7 @@ git push origin main
 git push origin <version>
 ```
 
-### Step 4: Clean Up Remaining Dev Releases
+### Step 5: Clean Up Remaining Dev Releases
 
 Delete all dev releases for this phase target:
 
@@ -125,7 +137,7 @@ git tag -l 'v<target>-dev.*' | while read tag; do
 done
 ```
 
-### Step 5: Verify
+### Step 6: Verify
 
 ```bash
 # Confirm the module resolves on the proxy

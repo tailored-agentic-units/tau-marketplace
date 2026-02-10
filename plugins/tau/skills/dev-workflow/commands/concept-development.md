@@ -84,6 +84,23 @@ Each issue body should contain enough context to bootstrap a task execution sess
 
 ### Phase 5: Concept Documentation
 
+The documentation output depends on whether the concept initializes a new project.
+
+**If the concept initializes a new project:**
+
+The concept document becomes `_project/README.md` in the target repository — the project identity
+and implementation context document. The vision section leads, followed by implementation context
+(architecture, conventions, status, and any other project-specific details relevant to development
+sessions).
+
+Ensure the directory exists:
+
+```bash
+mkdir -p _project
+```
+
+**If the concept is exploratory / not ready for project initialization:**
+
 Create a concept document at `.claude/context/concepts/[slug].md`.
 
 Ensure the directory exists before writing:
@@ -132,7 +149,8 @@ mkdir -p .claude/context/concepts
 
 At the end of a concept development session:
 
-- Concept document exists in `.claude/context/concepts/`
+- **If project initialized**: `_project/README.md` exists as the authoritative project document
+- **If exploratory**: Concept document exists in `.claude/context/concepts/`
 - Objectives created as parent issues with `Objective` issue type and `objective` label only
 - Sub-issues created on respective repositories with `Task` issue type, category/package labels, and bootstrap context
 - Sub-issues linked to their Objectives via GraphQL API
