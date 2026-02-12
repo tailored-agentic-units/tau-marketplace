@@ -6,7 +6,7 @@ Plugin marketplace for the [Tailored Agentic Units](https://github.com/tailored-
 
 | Plugin | Description |
 |--------|-------------|
-| [tau](./plugins/tau/) | Core plugin — development workflows, GitHub operations, Go patterns, project management, and library usage guides |
+| [tau](./plugins/tau/) | Core plugin — development workflows, GitHub operations, Go patterns, project management, and kernel usage guides |
 
 ## Installation
 
@@ -42,18 +42,17 @@ Plugin skills are namespaced with `tau:`. Add the skills your project needs to t
       "Skill(tau:dev-workflow)",
       "Skill(tau:github-cli)",
       "Skill(tau:go-patterns)",
+      "Skill(tau:kernel)",
       "Skill(tau:project-management)",
-      "Skill(tau:skill-creator)",
-      "Skill(tau:tau-core)",
-      "Skill(tau:tau-orchestrate)"
+      "Skill(tau:skill-creator)"
     ]
   }
 }
 ```
 
-Only include the skills relevant to your project. For example, a repository that uses `tau-core` but not `tau-orchestrate` would omit `Skill(tau:tau-orchestrate)`.
+Only include the skills relevant to your project. For example, a repository that doesn't use the TAU kernel would omit `Skill(tau:kernel)`.
 
-### 3. Configure tool permissions
+### 2. Configure tool permissions
 
 Some skills use CLI tools that require their own permissions. Add the ones your workflow needs:
 
@@ -92,9 +91,9 @@ Here is a full `.claude/settings.json` for a TAU Go library project:
       "Skill(tau:dev-workflow)",
       "Skill(tau:github-cli)",
       "Skill(tau:go-patterns)",
+      "Skill(tau:kernel)",
       "Skill(tau:project-management)",
-      "Skill(tau:skill-creator)",
-      "Skill(tau:tau-core)"
+      "Skill(tau:skill-creator)"
     ]
   }
 }
@@ -108,17 +107,29 @@ User-invocable skills can also be triggered directly with slash commands using t
 
 See the [tau plugin README](./plugins/tau/) for a detailed breakdown of available skills and their capabilities.
 
+## Development
+
+This repository uses the `tau-marketplace-dev` skill for structured maintenance. Use `/tau-marketplace-dev update` to start an update session and `/tau-marketplace-dev release` to tag releases after PRs are merged.
+
 ## Repository Structure
 
 ```
 tau-marketplace/
+├── .claude/
+│   ├── settings.json
+│   └── skills/
+│       └── tau-marketplace-dev/   # Repository development workflow
 ├── .claude-plugin/
-│   └── marketplace.json       # Marketplace manifest
+│   └── marketplace.json           # Marketplace manifest
+├── .github/
+│   └── workflows/
+│       └── release.yml            # Tag-triggered release automation
+├── CHANGELOG.md                   # Release notes
 ├── plugins/
-│   └── tau/                   # Core TAU plugin
+│   └── tau/                       # Core TAU plugin
 │       ├── .claude-plugin/
-│       │   └── plugin.json    # Plugin manifest
-│       ├── .lsp.json          # Language server configuration
-│       └── skills/            # 8 skills (see plugin README)
+│       │   └── plugin.json        # Plugin manifest (version source of truth)
+│       ├── .lsp.json              # Language server configuration
+│       └── skills/                # 7 skills (see plugin README)
 └── README.md
 ```

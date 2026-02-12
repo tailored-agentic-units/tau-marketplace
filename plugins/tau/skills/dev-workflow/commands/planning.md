@@ -3,14 +3,15 @@
 ## Purpose
 
 Break down project structure into actionable development units. Planning sessions
-translate high-level vision into structured GitHub issues that drive development sessions.
+translate the phase-level roadmap from concept development into structured GitHub
+issues that drive development sessions.
 
 Two variants exist, forming a top-down decomposition:
 
 | Variant | Input | Output |
 |---------|-------|--------|
-| **Phase Planning** | A phase on the project board | Objective issues on the primary repo |
-| **Objective Planning** | An Objective issue | Sub-issues across relevant repos |
+| **Phase Planning** | A Phase (from concept development) | Objective issues on the primary repo, `_project/phase.md` |
+| **Objective Planning** | An Objective issue | Sub-issues across relevant repos, `_project/objective.md` |
 
 ## Prerequisites
 
@@ -23,12 +24,12 @@ Planning sessions fit into the broader development lifecycle:
 
 ```
 Concept Development → Phase Planning → Objective Planning → Task Execution
-                      ^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^
+(produces Phases)     ^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^
                       This session type
 ```
 
-- **Concept Development** establishes vision, architecture, and project infrastructure
-- **Phase Planning** decomposes a phase into Objectives
+- **Concept Development** establishes vision, phases, and project infrastructure
+- **Phase Planning** decomposes a Phase into Objectives
 - **Objective Planning** decomposes an Objective into executable sub-issues
 - **Task Execution** resolves a single sub-issue (one branch, one PR)
 
@@ -53,7 +54,7 @@ Concept Development → Phase Planning → Objective Planning → Task Execution
 
 #### 1. Context Gathering
 
-- Read `_project/README.md` from the primary repository for vision and architecture
+- Read `_project/README.md` from the primary repository for vision, architecture, and the Phases section (produced by concept development) to understand this phase's area of focus and version target
 - Read `_project/phase.md` if it exists for current phase context
 - Review existing concept documents in `.claude/context/concepts/`
 - Review the project board: current phase items, backlog, existing objectives
@@ -76,6 +77,10 @@ Concept Development → Phase Planning → Objective Planning → Task Execution
 
 Create each Objective as a parent issue on the primary repository. Objectives receive
 only the `objective` label — no category or package labels.
+
+**Objective issue body convention:**
+
+Each Objective body should contain enough context to drive an Objective Planning session:
 
 ```bash
 OBJECTIVE_URL=$(gh issue create \
@@ -178,6 +183,10 @@ Create or update `_project/phase.md` with:
 
 Create sub-issues on their respective repositories and link to the Objective. Sub-issues
 receive category label(s) and package label(s) — not the `objective` label.
+
+**Sub-issue body convention:**
+
+Each sub-issue body should contain enough context to bootstrap a task execution session:
 
 ```bash
 # Create sub-issue on the target repo

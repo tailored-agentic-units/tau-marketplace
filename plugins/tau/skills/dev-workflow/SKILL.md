@@ -82,7 +82,7 @@ Before starting a session, collect the required metadata based on session type.
 
 ### Concept Development Session
 
-Develops a new idea from rough concept to actionable plan with full project-management infrastructure. Produces a concept document and may establish new phases, repositories, or project structure.
+Develops a new idea from initial requirements to a project concept with long-term vision. Defines Phases as areas of focus, initializes repository and project board infrastructure, and produces a concept document (`_project/README.md` for new projects). Does NOT create Objectives or sub-issues — those are created during planning sessions.
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
@@ -92,9 +92,9 @@ See [concept-development.md](commands/concept-development.md) for the full workf
 
 Breaks down project structure into actionable units. Two variants:
 
-**Phase Planning** — Takes a phase and produces Objectives (parent issues with the `objective` label). Each Objective represents a cohesive set of requirements within the phase. Objectives are created on the primary repository.
+**Phase Planning** — Takes a Phase (produced by concept development) and decomposes it into Objectives (parent issues with the `objective` label). This is the primary entry point for creating Objectives, which are created on the primary repository and documented in `_project/phase.md`.
 
-**Objective Planning** — Takes an Objective and produces sub-issues across the relevant repositories. This is where architecture details are ironed out and the scope of each development session is defined. Each sub-issue maps to exactly one branch and one PR.
+**Objective Planning** — Takes an Objective and produces sub-issues across the relevant repositories. This is where architecture details are ironed out and the scope of each development session is defined. Each sub-issue maps to exactly one branch and one PR, and is documented in `_project/objective.md`.
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
@@ -118,7 +118,7 @@ See [project-review.md](commands/project-review.md) for the full workflow.
 
 ### Release Session
 
-Two release types: **dev releases** (per-PR pre-release tags like `v0.1.0-dev.3.7`) and **phase releases** (final version like `v0.1.0`). Dev releases are triggered as part of task execution closeout. Phase releases finalize a version by consolidating dev tag CHANGELOG sections, running validation, and tagging all phase modules. Dev-type references augment with tag format conventions (e.g., Go modules require a `v` prefix).
+Two release types: **dev releases** (per-PR pre-release tags like `v0.1.0-dev.3.7`) and **phase releases** (final version like `v0.1.0`). Dev releases are triggered after a PR is merged — the CHANGELOG entry is created during task execution closeout (Phase 8c), and the release session handles tagging and verification. Phase releases finalize a version by consolidating dev tag CHANGELOG sections, running validation, and tagging. Dev-type references augment with tag format conventions (e.g., Go modules require a `v` prefix).
 
 **Skills loaded:** tau:github-cli, plus domain-specific skills based on development type
 
@@ -151,7 +151,7 @@ Directories are created on demand when the first artifact is placed in them.
 | Concept | `[slug].md` | `audio-protocol.md` |
 | Implementation guide | `[issue-number]-[slug].md` | `42-audio-protocol.md` |
 | Session summary | `[issue-number]-[slug].md` | `42-audio-protocol.md` |
-| Review report | `[YYYY-MM-DD]-[scope].md` | `2026-02-03-tau-core.md` |
+| Review report | `[YYYY-MM-DD]-[scope].md` | `2026-02-03-kernel.md` |
 
 ### Lifecycle
 

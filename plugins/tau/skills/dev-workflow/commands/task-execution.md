@@ -212,9 +212,27 @@ mkdir -p .claude/context/guides/.archive
 mv .claude/context/guides/[issue-number]-[slug].md .claude/context/guides/.archive/
 ```
 
-#### 8c. Pull Request
+#### 8c. CHANGELOG Update
 
-Commit all changes, push the branch to the remote, and create a PR:
+Derive the dev pre-release tag from the issue metadata and add a versioned section to `CHANGELOG.md`:
+
+```
+Tag format: v<target>-dev.<objective-number>.<issue-number>
+Example: v0.1.0-dev.3.7
+```
+
+Add the new section at the top of the CHANGELOG (below the `# Changelog` heading):
+
+```markdown
+## v0.1.0-dev.3.7
+- [Description of change] (#7)
+```
+
+This entry will be consolidated into the phase release entry when the phase is completed (see [release.md](release.md)).
+
+#### 8d. Pull Request
+
+Commit all changes (including the CHANGELOG update), push the branch to the remote, and create a PR:
 
 ```bash
 git add .
@@ -238,16 +256,6 @@ Closes #[issue-number]
 EOF
 )"
 ```
-
-#### 8d. Dev Release
-
-After the PR is merged, create a dev release for the changed modules. Follow the
-dev release workflow in [release.md](release.md):
-
-1. Identify changed modules from the PR
-2. Tag in dependency order with the next dev version
-3. Cascade to dependent modules (update go.mod, re-tag)
-4. Clean up old dev releases (retain current + previous only)
 
 #### 8e. Project-Management Update
 

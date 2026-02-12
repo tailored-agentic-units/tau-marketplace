@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract prefix from tag
+        id: meta
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          PREFIX="${TAG%%-v*}"
+          echo "prefix=${PREFIX}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: taiki-e/create-gh-release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prefix: ${{ steps.meta.outputs.prefix }}-
+          changelog: CHANGELOG.md

@@ -17,7 +17,7 @@ Skills load automatically based on context:
 
 | Skill | Use When |
 |-------|----------|
-| tau:dev-workflow | Development sessions: concept development, planning, task execution, project review, release |
+| tau:dev-workflow | Development sessions: concept development (vision + phases), planning (phase → objectives, objective → tasks), task execution, project review, release |
 | tau:github-cli | GitHub repository operations via gh CLI (issues, PRs, releases, labels, secrets, sub-issues) |
 | tau:go-patterns | Go design patterns: interfaces, error handling, package structure, configuration |
 | tau:project-management | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog management |

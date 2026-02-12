@@ -16,6 +16,7 @@ Evaluate the alignment between project-management infrastructure and the current
 Evaluate the project-management infrastructure:
 
 - List projects and phases using the tau:project-management skill
+- Verify project board phases match the phases defined in `_project/README.md`
 - List open issues across linked repositories
 - Verify label taxonomy consistency across repos (compare against standard labels)
 - Verify issue type assignments (all issues should have a type; Objectives = `Objective`, sub-issues = `Task` or `Bug`)
@@ -55,6 +56,7 @@ Audit the `.claude/context/` directory:
 Compare the current state to the project's long-term vision:
 
 - Assess phase progress using the tau:project-management skill (item counts per phase)
+- Verify Phases in `_project/README.md` still reflect the project's direction and that phase areas of focus haven't drifted
 - Identify gaps between planned and actual state
 - Evaluate whether remaining phases and issues adequately capture the path forward
 - Surface risks to long-term objectives

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Develop a new idea or capability from rough concept to actionable plan with full project-management infrastructure. The outcome is either an extension of an existing repository with new features or the initialization of an entirely new project.
+Develop a new idea or capability from initial requirements to a project concept with long-term vision. The outcome is a defined project with Phases mapped out as areas of focus, repository infrastructure initialized, and a GitHub Project board ready for phase planning.
 
 ## Prerequisites
 
@@ -13,6 +13,7 @@ Develop a new idea or capability from rough concept to actionable plan with full
 
 ### Phase 1: Explore and Understand
 
+- Receive and review the initial set of ideas and requirements from the user
 - Read existing codebase and architecture relevant to the concept
 - Review existing concept documents in `.claude/context/concepts/`
 - Review current project-management state (projects, phases, backlog)
@@ -24,12 +25,14 @@ Develop a new idea or capability from rough concept to actionable plan with full
 - Define boundaries: what is in scope, what is not
 - Identify architectural constraints and trade-offs
 - Document dependencies (libraries, services, infrastructure)
-- Estimate complexity and break into discrete work items
+- Develop the long-term vision for what the project will deliver
+- Map out the initial set of Phases — each Phase is an area of focus, not a detailed implementation plan
 
 ### Phase 3: Collaborative Discussion
 
 - Surface strategic questions and alternatives
 - Discuss trade-offs with rationale
+- Refine Phase boundaries and ordering
 - Resolve through collaborative iteration, not assumptions
 - Document key decisions and the reasoning behind them
 
@@ -39,48 +42,15 @@ Determine whether the concept extends an existing repository or requires a new p
 
 **If initializing a new project (do first if applicable):**
 
-1. Create the repository
+1. Create the repository at the specified local and remote location
 2. Bootstrap standard labels (see tau:project-management skill: Label Convention)
 3. Link repository to the project board
-4. Create the Phase field if it doesn't exist, or add new phase options
-5. Create milestones matching the phases on linked repositories
 
-**Create Objectives with sub-issues:**
+**Configure project board phases:**
 
-1. Create an **Objective** (parent issue) on the primary repository for each cohesive set of requirements
-2. Assign the `Objective` issue type and `objective` label — no other labels on Objectives
-3. Create **sub-issues** on their respective repositories with bootstrap context in the body
-4. Assign the `Task` issue type (or `Bug` for defects) to each sub-issue
-5. Apply category and package labels to sub-issues (see tau:project-management skill: Labeling Rules)
-6. Link sub-issues to their Objective via the GraphQL API (see tau:project-management skill: Objective Convention)
-7. Add Objectives and sub-issues to the project board
-8. Assign to the appropriate phase and corresponding milestones
-
-**Issue body convention:**
-
-Each issue body should contain enough context to bootstrap a task execution session:
-
-```markdown
-## Context
-
-[Why this work is needed and how it fits into the concept]
-
-## Scope
-
-[What this issue covers and what it does not]
-
-## Approach
-
-[Recommended implementation strategy, if known]
-
-## Dependencies
-
-[Issues or components this depends on]
-
-## Acceptance Criteria
-
-- [ ] [Specific, verifiable criteria]
-```
+1. Create the Phase field if it doesn't exist
+2. Add a phase option for each identified Phase
+3. Create milestones matching the phases on each linked repository
 
 ### Phase 5: Concept Documentation
 
@@ -89,9 +59,8 @@ The documentation output depends on whether the concept initializes a new projec
 **If the concept initializes a new project:**
 
 The concept document becomes `_project/README.md` in the target repository — the project identity
-and implementation context document. The vision section leads, followed by implementation context
-(architecture, conventions, status, and any other project-specific details relevant to development
-sessions).
+and implementation context document. The vision section leads, followed by phases, architecture,
+conventions, and any other project-specific details relevant to development sessions.
 
 Ensure the directory exists:
 
@@ -114,9 +83,20 @@ mkdir -p .claude/context/concepts
 ```markdown
 # [Concept Name]
 
+## Vision
+
+[Long-term vision for what this project will deliver]
+
 ## Core Premise
 
 [What this concept is and why it exists]
+
+## Phases
+
+| Phase | Focus Area | Version Target |
+|-------|-----------|----------------|
+| Phase 1 - [Name] | [Area of focus for this phase] | v[major].[minor].[patch] |
+| Phase 2 - [Name] | [Area of focus for this phase] | v[major].[minor].[patch] |
 
 ## Architecture
 
@@ -139,10 +119,6 @@ mkdir -p .claude/context/concepts
 ## Open Questions
 
 - [Unresolved questions for future sessions]
-
-## Related Issues
-
-- [owner/repo#number] - [issue title]
 ```
 
 ## Outcomes
@@ -151,8 +127,7 @@ At the end of a concept development session:
 
 - **If project initialized**: `_project/README.md` exists as the authoritative project document
 - **If exploratory**: Concept document exists in `.claude/context/concepts/`
-- Objectives created as parent issues with `Objective` issue type and `objective` label only
-- Sub-issues created on respective repositories with `Task` issue type, category/package labels, and bootstrap context
-- Sub-issues linked to their Objectives via GraphQL API
-- Issues added to the project board with phase assignments
-- Milestones created on affected repositories
+- Phases defined with focus areas and version targets
+- Phase field options created on the project board for each Phase
+- Milestones created on affected repositories matching Phases
+- Repository linked to the project board (if new project)
