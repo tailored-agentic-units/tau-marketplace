@@ -180,9 +180,7 @@ The AI runs through this checklist during Phase 6 (Validation):
 
 ## Closeout Augmentations
 
-During task execution Phase 8 (Closeout), add a CHANGELOG entry for the completed work:
-
-Add a summary line under the dev tag section created during closeout. The dev release step (Phase 8d) creates the `## v<target>-dev.<objective>.<issue>` section in `CHANGELOG.md` — the entry goes there, organized under the appropriate subsystem section.
+During task execution Phase 8c (CHANGELOG Update), add entries for the completed work under the dev tag section. Organize entries under the appropriate subsystem section within the `## v<target>-dev.<objective>.<issue>` heading.
 
 - Entry format: `- [Description of change] (#[issue-number])`
 

@@ -126,9 +126,7 @@ The AI runs through this checklist during Phase 6 (Validation):
 
 ## Closeout Augmentations
 
-During task execution Phase 8 (Closeout), add a CHANGELOG entry for the completed work:
-
-Add a summary line under the dev tag section created during closeout. The dev release step (Phase 8d) creates the `## v<target>-dev.<objective>.<issue>` section in `CHANGELOG.md` — the entry goes there.
+During task execution Phase 8c (CHANGELOG Update), add entries for the completed work under the dev tag section (`## v<target>-dev.<objective>.<issue>` heading).
 
 - Entry format: `- [Description of change] (#[issue-number])`
 
@@ -149,4 +147,3 @@ GOPROXY=proxy.golang.org go list -m github.com/owner/project@<version>
 Load these skills for Go library development:
 
 - **tau:go-patterns** - interface design, error handling, package structure, configuration lifecycle
-- **tau:tau-core-admin** - if contributing to the tau-core library specifically (provider/protocol patterns, test organization)

@@ -33,10 +33,7 @@ Core Claude Code plugin for the Tailored Agentic Units ecosystem. Provides share
 
 | Skill | Description |
 |-------|-------------|
-| [tau-agent](./skills/tau-agent/) | Building with `tau-agent` — agent creation, protocol execution (Chat, Vision, Tools, Embeddings), provider setup (Ollama, Azure), mock testing. |
-| [tau-core](./skills/tau-core/) | Building with `tau-core` — foundational types: protocol constants, response types, configuration structures, model types. |
-| [tau-orchestrate](./skills/tau-orchestrate/) | Building with `tau-orchestrate` — hub coordination, messaging patterns, state graphs, workflow composition (sequential, parallel, conditional), and observability. |
-| [tau-runtime](./skills/tau-runtime/) | Building with `tau-runtime` — runtime architecture, ConnectRPC interface, extension ecosystem, library composition. |
+| [kernel](./skills/kernel/) | Building with the TAU kernel — core types, agent creation, protocol execution (Chat, Vision, Tools, Embeddings), provider setup, orchestration (hub coordination, state graphs, workflows), and ConnectRPC interface. |
 
 ### Skill Authoring
 
@@ -88,7 +85,7 @@ The plugin includes a `.lsp.json` configuration for Go development using `gopls`
 
 | Location | Pattern | Example | Purpose |
 |----------|---------|---------|---------|
-| Plugin skill | `tau-[lib]` | `tau-core`, `tau-agent` | Library usage guide (building WITH the library) |
-| Repo skill | `tau-[lib]-dev` | `tau-core-dev`, `tau-agent-dev` | Contributing guide (developing the library itself) |
+| Plugin skill | `[name]` | `kernel`, `go-patterns` | Library usage guide or shared patterns |
+| Repo skill | `[name]-dev` | `kernel-dev` | Contributing guide (developing the library itself) |
 
 Plugin skills ship in this marketplace. Repo-level `-dev` skills remain in their respective repositories and provide contributor-specific context (architecture, testing conventions, extension patterns).

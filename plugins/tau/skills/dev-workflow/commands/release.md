@@ -41,7 +41,7 @@ the phase release is tagged.
 
 ## Dev Release
 
-Triggered after a PR is merged during active phase development.
+Triggered after a PR is merged during active phase development. The CHANGELOG entry for this dev release was created during task execution closeout (Phase 8c). This session only handles tagging and verification.
 
 ### Step 1: Derive Tag from Issue Metadata
 
@@ -53,18 +53,7 @@ The dev tag is deterministic — derived from the objective and issue numbers:
 TAG="v0.1.0-dev.3.7"
 ```
 
-### Step 2: Update CHANGELOG
-
-Add a versioned section for this dev release to `CHANGELOG.md`:
-
-```markdown
-## v0.1.0-dev.3.7
-- [Description of change] (#7)
-```
-
-Insert the new section at the top of the CHANGELOG (below `# Changelog`). Commit the update before tagging.
-
-### Step 3: Tag and Push
+### Step 2: Tag and Push
 
 ```bash
 git tag $TAG
@@ -72,7 +61,7 @@ git push origin main
 git push origin $TAG
 ```
 
-### Step 4: Verify
+### Step 3: Verify
 
 ```bash
 # Confirm the tag resolves on the Go module proxy
