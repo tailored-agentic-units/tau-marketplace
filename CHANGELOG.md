@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0
+
+- Split planning command into dedicated `phase` and `objective` sub-commands with transition closeout logic
+- Add transition closeout workflow: close previous phase/objective, handle incomplete work (carry forward or move to backlog), enforce no-orphaned-issues principle
+- Rename all command files to match their command names (concept.md, phase.md, objective.md, task.md, review.md, release.md)
+- Add Phases roadmap (`_project/README.md`) and objectives table (`_project/phase.md`) as reference points for phase/objective sequencing
+- Remove `_project/` document archival — GitHub project infrastructure serves as historical record
+- Add remediation convention to task execution implementation guide template
+- Remove project-specific language from project-agnostic commands (release, review)
+
 ## 0.0.8
 
 - Refocus concept-development to produce Phases (areas of focus) instead of Objectives

@@ -47,7 +47,7 @@ Audit the `.claude/context/` directory:
 
   | Document | Verified Against |
   |----------|-----------------|
-  | `_project/README.md` | **Codebase** — do subsystem statuses match actual code? Does the dependency hierarchy match actual imports? Do conventions match actual patterns? |
+  | `_project/README.md` | **Codebase** — does the documented architecture match actual code? Does the dependency hierarchy match actual imports? Do conventions match actual patterns? |
   | `_project/phase.md` | **GitHub project board** — does the phase scope match? Are objective statuses current? Does the version target still hold? |
   | `_project/objective.md` | **GitHub issues** — do sub-issue statuses match? Are acceptance criteria current? Have architecture decisions changed during implementation? |
 
