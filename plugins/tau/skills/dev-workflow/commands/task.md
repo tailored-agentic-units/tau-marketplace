@@ -109,6 +109,16 @@ descriptions of what should be updated.]
 
 ...
 
+## Remediation
+
+[Added during Phase 4 if blockers are discovered during developer execution.
+Each remedial step is numbered R1, R2, etc. and describes a fix required
+to meet the validation criteria. This section is omitted from the initial guide.]
+
+### R1: [Description of blocker and fix]
+
+...
+
 ## Validation Criteria
 
 - [ ] [Specific checks that confirm correct implementation]
@@ -135,6 +145,8 @@ Apply any additional file conventions specified by the dev-type reference.
 - Developer executes the implementation as the code base maintainer
 - AI remains available for mentorship, clarification, and adjustments
 - Focus on code structure and correctness
+
+**Remediation convention:** When blockers are discovered during developer execution (e.g., pre-existing bugs in dependencies, missing API methods, serialization issues), add a **Remediation** section to the implementation guide between the final implementation step and the Validation Criteria. Each remedial step is numbered R1, R2, etc. and describes the blocker, its root cause, and the fix. This keeps the original implementation steps clean while capturing the additional work required to meet validation criteria.
 
 ### Phase 5: Testing
 

@@ -1,21 +1,21 @@
 ---
 name: dev-workflow
-argument-hint: "[concept | plan phase | plan objective <issue-number> | task <issue-number> | review | release <version>]"
+argument-hint: "[concept | phase | objective <issue-number> | task <issue-number> | review | release <version>]"
 description: >
   REQUIRED for structured development workflow sessions.
   Use when the user asks to "start a session", "concept development",
-  "plan phase", "plan objective", "task execution", "project review",
+  "phase planning", "objective planning", "task execution", "project review",
   "start development", "create concept", "review project", "session closeout",
   "tag a release", "create release", or any structured development activity.
-  Triggers: session, concept, plan, planning, phase planning, objective planning,
+  Triggers: session, concept, phase, phase planning, objective, objective planning,
   task execution, project review, implementation guide, closeout, development workflow,
   start session, review session, concept session, release, tag, version.
 
   When this skill is invoked, identify the session type from the argument
-  (concept, plan, task, review, or release) and follow the corresponding workflow
-  in the commands/ directory. Load the tau:project-management skill for concept
-  development, planning, and project review sessions. Load domain-specific skills
-  for task execution and release sessions.
+  (concept, phase, objective, task, review, or release) and follow the corresponding
+  workflow in the commands/ directory. Load the tau:project-management skill for
+  concept development, phase planning, objective planning, and project review
+  sessions. Load domain-specific skills for task execution and release sessions.
 ---
 
 # Development Workflow
@@ -24,9 +24,9 @@ description: >
 
 **ALWAYS invoke this skill when the user's request involves ANY of these:**
 
-- Starting any structured development session (concept, plan, task, review, or release)
+- Starting any structured development session (concept, phase, objective, task, review, or release)
 - Creating or developing a new concept
-- Planning a phase (breaking it into objectives) or an objective (breaking it into sub-issues)
+- Phase planning (breaking a phase into objectives) or objective planning (breaking an objective into sub-issues)
 - Executing a development task from a GitHub issue
 - Reviewing project infrastructure and codebase health
 - Tagging a release
@@ -42,8 +42,8 @@ Before starting a session, collect the required metadata based on session type.
 | Pattern | Session Type | Example |
 |---------|-------------|---------|
 | `/dev-workflow concept` | Concept Development | `/dev-workflow concept` |
-| `/dev-workflow plan phase` | Phase Planning | `/dev-workflow plan phase` |
-| `/dev-workflow plan objective <issue>` | Objective Planning | `/dev-workflow plan objective 5` |
+| `/dev-workflow phase` | Phase Planning | `/dev-workflow phase` |
+| `/dev-workflow objective <issue>` | Objective Planning | `/dev-workflow objective 5` |
 | `/dev-workflow task <issue-number>` | Task Execution | `/dev-workflow task 42` |
 | `/dev-workflow review` | Project Review | `/dev-workflow review` |
 | `/dev-workflow release <version>` | Release | `/dev-workflow release v0.2.0` |
@@ -56,9 +56,10 @@ Before starting a session, collect the required metadata based on session type.
 
 ### Phase Planning
 
-1. **Phase name** - identified from the project board or collected from the user.
-2. **Primary repository** - where Objectives will be created.
-3. **`_project/README.md`** - read from the primary repository for vision and architecture context.
+1. **Phase name** - identified from the Phases roadmap in `_project/README.md` or collected from the user.
+2. **Version target** - the semantic version this phase builds toward (from the Phases roadmap).
+3. **Primary repository** - where Objectives will be created.
+4. **`_project/README.md`** - read from the primary repository for vision, architecture, and the Phases roadmap.
 
 ### Objective Planning
 
@@ -82,23 +83,27 @@ Before starting a session, collect the required metadata based on session type.
 
 ### Concept Development Session
 
-Develops a new idea from initial requirements to a project concept with long-term vision. Defines Phases as areas of focus, initializes repository and project board infrastructure, and produces a concept document (`_project/README.md` for new projects). Does NOT create Objectives or sub-issues — those are created during planning sessions.
+Develops a new idea from initial requirements to a project concept with long-term vision. Defines Phases as areas of focus, initializes repository and project board infrastructure, and produces a concept document (`_project/README.md` for new projects). Does NOT create Objectives or sub-issues — those are created during phase and objective planning sessions.
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
-See [concept-development.md](commands/concept-development.md) for the full workflow.
+See [concept.md](commands/concept.md) for the full workflow.
 
-### Planning Session
+### Phase Planning Session
 
-Breaks down project structure into actionable units. Two variants:
-
-**Phase Planning** — Takes a Phase (produced by concept development) and decomposes it into Objectives (parent issues with the `objective` label). This is the primary entry point for creating Objectives, which are created on the primary repository and documented in `_project/phase.md`.
-
-**Objective Planning** — Takes an Objective and produces sub-issues across the relevant repositories. This is where architecture details are ironed out and the scope of each development session is defined. Each sub-issue maps to exactly one branch and one PR, and is documented in `_project/objective.md`.
+Takes a Phase (produced by concept development) and decomposes it into Objectives (parent issues with the `objective` label and `Objective` issue type). This is the primary entry point for creating Objectives, which are created on the primary repository and documented in `_project/phase.md`. When a previous phase exists, the session begins with a transition closeout that handles incomplete work (transitioning objectives to the new phase or moving them to backlog) before clearing the slate.
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
-See [planning.md](commands/planning.md) for the full workflow.
+See [phase.md](commands/phase.md) for the full workflow.
+
+### Objective Planning Session
+
+Takes an Objective and produces sub-issues across the relevant repositories, each assigned the `Task` (or `Bug`) issue type. This is where architecture details are ironed out and the scope of each development session is defined. Each sub-issue maps to exactly one branch and one PR, and is documented in `_project/objective.md`. When a previous objective exists, the session begins with a transition closeout that handles incomplete sub-issues (carrying them forward to the new objective or moving them to backlog) before clearing the slate.
+
+**Skills loaded:** tau:project-management, tau:github-cli
+
+See [objective.md](commands/objective.md) for the full workflow.
 
 ### Task Execution Session
 
@@ -106,7 +111,7 @@ Issue-driven development session starting in Claude Code plan mode. Creates a br
 
 **Skills loaded:** tau:github-cli, plus domain-specific skills based on development type
 
-See [task-execution.md](commands/task-execution.md) for the full workflow.
+See [task.md](commands/task.md) for the full workflow.
 
 ### Project Review Session
 
@@ -114,7 +119,7 @@ Evaluates the alignment between project-management infrastructure and the curren
 
 **Skills loaded:** tau:project-management, tau:github-cli
 
-See [project-review.md](commands/project-review.md) for the full workflow.
+See [review.md](commands/review.md) for the full workflow.
 
 ### Release Session
 
@@ -182,7 +187,8 @@ A task execution session starts in plan mode (producing a plan file), then trans
 | Session Type | Always Loaded | Conditionally Loaded |
 |-------------|---------------|---------------------|
 | Concept Development | tau:project-management, tau:github-cli | Domain skills based on concept scope |
-| Planning | tau:project-management, tau:github-cli | Domain skills for architecture context |
+| Phase Planning | tau:project-management, tau:github-cli | Domain skills for architecture context |
+| Objective Planning | tau:project-management, tau:github-cli | Domain skills for architecture context |
 | Task Execution | tau:github-cli | Dev-type skills (e.g., tau:go-patterns), domain skills based on issue labels |
 | Project Review | tau:project-management, tau:github-cli | Domain skills for codebase assessment |
 | Release | tau:github-cli | Dev-type skills for tag format and validation |

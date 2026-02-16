@@ -101,17 +101,14 @@ git add CHANGELOG.md
 git commit -m "release: <version>"
 ```
 
-### Step 3: Archive Phase
+### Step 3: Clean Up Phase Documents
 
 If this release completes a phase:
 
-```bash
-# Archive the current phase document
-PHASE_NUM=$(printf "%02d" <phase-number>)
-mv _project/phase.md _project/.archive/phase.${PHASE_NUM}.md
-```
+- Delete `_project/phase.md` — GitHub project infrastructure serves as the historical record
+- Delete `_project/objective.md` if it exists
 
-Update `_project/README.md` subsystem status if subsystems moved from skeleton to complete during this phase.
+Update `_project/README.md` to reflect progress made during this phase (e.g., status changes, completed milestones, architectural shifts).
 
 ### Step 4: Tag and Push
 
