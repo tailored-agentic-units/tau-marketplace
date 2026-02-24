@@ -57,10 +57,10 @@ tau-marketplace/
 
 Initializes a structured update session for modifying the plugin ecosystem.
 
-See [update.md](commands/update.md) for the full workflow.
+See [update.md](./commands/update.md) for the full workflow.
 
 ### Release Session
 
 After a PR from an update session is merged, creates and pushes release tags.
 
-See [release.md](commands/release.md) for the full workflow.
+See [release.md](./commands/release.md) for the full workflow.
