@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- Fix `gh issue create` commands using unsupported `--json` output flag — capture stdout directly instead
+- Fix `addSubIssue` GraphQL mutation using `subIssueUrl` (URI!) which causes type mismatch with `gh api graphql -f` — use `subIssueId` (ID!) instead
+- Remove broken "Add by URL" alternative sections from sub-issue reference docs
+
 ## 0.1.0
 
 - Split planning command into dedicated `phase` and `objective` sub-commands with transition closeout logic

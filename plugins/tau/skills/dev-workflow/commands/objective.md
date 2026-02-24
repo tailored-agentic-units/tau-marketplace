@@ -163,7 +163,7 @@ CHILD_URL=$(gh issue create \
 
 - [ ] [Specific, verifiable criteria]
 EOF
-)" --json url --jq '.url')
+)")
 
 # Assign the Task issue type (or Bug for defect fixes)
 CHILD_ID=$(gh issue view "$CHILD_URL" --json id --jq '.id')
@@ -178,11 +178,11 @@ mutation($issueId: ID!, $typeId: ID!) {
 PARENT_ID=$(gh issue view <objective-number> --repo <owner>/<primary-repo> --json id --jq '.id')
 gh api graphql \
   -H "GraphQL-Features: sub_issues" \
-  -f query='mutation($parentId: ID!, $childUrl: URI!) {
-    addSubIssue(input: {issueId: $parentId, subIssueUrl: $childUrl}) {
+  -f query='mutation($parentId: ID!, $childId: ID!) {
+    addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
       subIssue { number title url }
     }
-  }' -f parentId="$PARENT_ID" -f childUrl="$CHILD_URL"
+  }' -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
 ```
 
 **Re-parent carry-forward sub-issues** (if any from Step 0b):

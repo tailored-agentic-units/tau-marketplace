@@ -34,18 +34,6 @@ gh api graphql \
   }' -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
 ```
 
-### Add by URL (alternative)
-
-```bash
-gh api graphql \
-  -H "GraphQL-Features: sub_issues" \
-  -f query='mutation($parentId: ID!, $childUrl: URI!) {
-    addSubIssue(input: {issueId: $parentId, subIssueUrl: $childUrl}) {
-      subIssue { number title url }
-    }
-  }' -f parentId="$PARENT_ID" -f childUrl="<issue-url>"
-```
-
 ### Replace Parent
 
 Move a sub-issue from one parent to another:

@@ -144,7 +144,7 @@ OBJECTIVE_URL=$(gh issue create \
 
 [Other objectives or prerequisites this depends on]
 EOF
-)" --json url --jq '.url')
+)")
 
 # Assign the Objective issue type
 ISSUE_ID=$(gh issue view "$OBJECTIVE_URL" --json id --jq '.id')

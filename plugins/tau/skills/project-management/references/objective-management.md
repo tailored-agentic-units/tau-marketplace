@@ -48,20 +48,6 @@ gh api graphql \
   }' -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
 ```
 
-### Alternative: Add by URL
-
-```bash
-PARENT_ID=$(gh issue view <parent-number> --repo <owner>/<parent-repo> --json id --jq '.id')
-
-gh api graphql \
-  -H "GraphQL-Features: sub_issues" \
-  -f query='mutation($parentId: ID!, $childUrl: URI!) {
-    addSubIssue(input: {issueId: $parentId, subIssueUrl: $childUrl}) {
-      subIssue { number title url }
-    }
-  }' -f parentId="$PARENT_ID" -f childUrl="https://github.com/<owner>/<repo>/issues/<number>"
-```
-
 ### Replace Parent
 
 Move a sub-issue from one objective to another:
@@ -176,7 +162,7 @@ OBJECTIVE_URL=$(gh issue create \
 
 Created across repositories as needed.
 EOF
-)" --json url --jq '.url')
+)")
 
 PARENT_ID=$(gh issue view "$OBJECTIVE_URL" --json id --jq '.id')
 
@@ -205,7 +191,7 @@ CHILD_URL=$(gh issue create \
 
 - [ ] [Criteria]
 EOF
-)" --json url --jq '.url')
+)")
 
 CHILD_ID=$(gh issue view "$CHILD_URL" --json id --jq '.id')
 
@@ -220,11 +206,11 @@ mutation($issueId: ID!, $typeId: ID!) {
 # 5. Link sub-issue to objective
 gh api graphql \
   -H "GraphQL-Features: sub_issues" \
-  -f query='mutation($parentId: ID!, $childUrl: URI!) {
-    addSubIssue(input: {issueId: $parentId, subIssueUrl: $childUrl}) {
+  -f query='mutation($parentId: ID!, $childId: ID!) {
+    addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
       subIssue { number title url }
     }
-  }' -f parentId="$PARENT_ID" -f childUrl="$CHILD_URL"
+  }' -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
 
 # 6. Add objective to project board and assign phase
 # (see backlog-management.md and phase assignment patterns)
