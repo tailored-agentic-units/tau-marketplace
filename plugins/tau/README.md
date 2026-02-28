@@ -35,12 +35,6 @@ Core Claude Code plugin for the Tailored Agentic Units ecosystem. Provides share
 |-------|-------------|
 | [kernel](./skills/kernel/) | Building with the TAU kernel — core types, agent creation, protocol execution (Chat, Vision, Tools, Embeddings), provider setup, orchestration (hub coordination, state graphs, workflows), and ConnectRPC interface. |
 
-### Skill Authoring
-
-| Skill | Description |
-|-------|-------------|
-| [skill-creator](./skills/skill-creator/) | Creating and modifying Claude Code skills — SKILL.md structure, frontmatter conventions, reference files, allowed-tools, hooks, and string substitutions. |
-
 ## Cross-Skill Integration
 
 The `dev-workflow` skill acts as an orchestrator, loading other skills based on session type:
@@ -49,7 +43,7 @@ The `dev-workflow` skill acts as an orchestrator, loading other skills based on 
 |-------------|---------------|
 | Concept Development | project-management, github-cli |
 | Planning | project-management, github-cli |
-| Task Execution | github-cli, go-patterns, skill-creator, plus dev-type references |
+| Task Execution | github-cli, go-patterns, plus dev-type references |
 | Project Review | project-management, github-cli |
 | Release | github-cli, plus dev-type references |
 

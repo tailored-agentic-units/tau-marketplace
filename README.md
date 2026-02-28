@@ -43,8 +43,7 @@ Plugin skills are namespaced with `tau:`. Add the skills your project needs to t
       "Skill(tau:github-cli)",
       "Skill(tau:go-patterns)",
       "Skill(tau:kernel)",
-      "Skill(tau:project-management)",
-      "Skill(tau:skill-creator)"
+      "Skill(tau:project-management)"
     ]
   }
 }
@@ -92,8 +91,7 @@ Here is a full `.claude/settings.json` for a TAU Go library project:
       "Skill(tau:github-cli)",
       "Skill(tau:go-patterns)",
       "Skill(tau:kernel)",
-      "Skill(tau:project-management)",
-      "Skill(tau:skill-creator)"
+      "Skill(tau:project-management)"
     ]
   }
 }
@@ -130,6 +128,6 @@ tau-marketplace/
 │       ├── .claude-plugin/
 │       │   └── plugin.json        # Plugin manifest (version source of truth)
 │       ├── .lsp.json              # Language server configuration
-│       └── skills/                # 7 skills (see plugin README)
+│       └── skills/                # 6 skills (see plugin README)
 └── README.md
 ```

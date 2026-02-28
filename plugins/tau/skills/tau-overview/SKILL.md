@@ -21,7 +21,6 @@ Skills load automatically based on context:
 | tau:github-cli | GitHub repository operations via gh CLI (issues, PRs, releases, labels, secrets, sub-issues) |
 | tau:go-patterns | Go design patterns: interfaces, error handling, package structure, configuration |
 | tau:project-management | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog management |
-| tau:skill-creator | Creating or modifying Claude Code skills |
 | tau:kernel | Building with the TAU kernel: core types, agent, orchestrate, ConnectRPC interface |
 
 ### Cross-Skill Integration
@@ -32,7 +31,7 @@ The `tau:dev-workflow` skill orchestrates structured development sessions that l
 |-------------|---------------|
 | Concept Development | tau:project-management, tau:github-cli |
 | Planning | tau:project-management, tau:github-cli |
-| Task Execution | tau:github-cli, tau:go-patterns, tau:skill-creator (+ dev-type references) |
+| Task Execution | tau:github-cli, tau:go-patterns (+ dev-type references) |
 | Project Review | tau:project-management, tau:github-cli |
 | Release | tau:github-cli (+ dev-type references) |
 
