@@ -12,8 +12,6 @@ Manage version releases for TAU ecosystem repositories. Two release types exist:
 ## Prerequisites
 
 - Load skills: **tau:github-cli**, plus domain-specific skills based on development type
-- Ensure working tree is clean (`git status` shows no uncommitted changes)
-- Ensure the current branch is `main`
 
 ## Versioning Strategy
 
@@ -42,6 +40,22 @@ the phase release is tagged.
 ## Dev Release
 
 Triggered after a PR is merged during active phase development. The CHANGELOG entry for this dev release was created during task execution closeout (Phase 8c). This session only handles tagging and verification.
+
+### Step 0: Sync Main
+
+Releases always follow a merged PR. Sync main and clean up the stale task branch:
+
+```bash
+# Identify current branch before switching (needed for cleanup)
+BRANCH=$(git branch --show-current)
+
+git checkout main
+git pull origin main
+
+# Delete the stale task branch and prune remote tracking refs
+git branch -d "$BRANCH"
+git remote prune origin
+```
 
 ### Step 1: Derive Tag from Issue Metadata
 
@@ -78,6 +92,21 @@ Triggered when all objectives in a phase are complete.
 
 - **Version**: Required, from argument (e.g., `/dev-workflow release v0.1.0`)
 - Must follow semantic versioning with `v` prefix
+
+### Step 0: Sync Main
+
+Sync main and clean up the stale task branch from the last merged PR:
+
+```bash
+BRANCH=$(git branch --show-current)
+
+git checkout main
+git pull origin main
+
+# Delete the stale task branch and prune remote tracking refs
+git branch -d "$BRANCH"
+git remote prune origin
+```
 
 ### Step 1: Validate
 

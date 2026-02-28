@@ -85,10 +85,104 @@ For each open objective:
 
   - **Transition**: note the objective for phase reassignment after the new phase is created (Step 6)
 
-#### 0c. Clean Slate
+#### 0c. Close Milestone
 
-- Delete `_project/phase.md` — GitHub project infrastructure serves as the historical record
-- Delete `_project/objective.md` if it exists (belongs to the outgoing phase)
+Close the milestone associated with the phase version target:
+
+```bash
+# Find the milestone number
+MILESTONE_NUMBER=$(gh api repos/<owner>/<repo>/milestones \
+  --jq '.[] | select(.title | startswith("<version-target>")) | .number')
+
+gh api --method PATCH repos/<owner>/<repo>/milestones/$MILESTONE_NUMBER \
+  -f state=closed
+```
+
+#### 0d. Update Project Documents
+
+- Clear `_project/phase.md` to an empty placeholder (phase complete, no active phase)
+- Clear `_project/objective.md` to an empty placeholder if it exists
+- Update `_project/README.md`:
+  - Add a Status column to the Phases table if not present
+  - Mark the completed phase as "Complete"
+  - Fix any descriptions that became stale during the phase (e.g., topology changes, approach shifts)
+
+#### 0e. Consolidate CHANGELOG and Clean Up Dev Releases
+
+1. **Consolidate CHANGELOG** — Replace all `## v<target>-dev.*` sections with a single
+   `## v<target>` section, grouped thematically by subsystem. Retain issue references.
+   No `v<target>-dev.*` sections should remain after consolidation.
+
+2. **Delete dev releases** — Remove all GitHub releases matching the dev tag pattern:
+
+   ```bash
+   gh release list --json tagName --jq '.[].tagName' \
+     | grep "^v<target>-dev\." \
+     | while read tag; do gh release delete "$tag" --yes; done
+   ```
+
+3. **Delete container registry images** (if the project publishes container images) —
+   Query the packages API for dev image versions and delete each:
+
+   ```bash
+   gh api user/packages/container/<package>/versions \
+     --jq '[.[] | select(.metadata.container.tags | any(startswith("<version>-dev"))) | .id] | .[]' \
+     | while read id; do gh api --method DELETE "user/packages/container/<package>/versions/$id"; done
+   ```
+
+   Skip this step if the project does not publish container images.
+
+4. **Delete dev tags** — Remove all dev tags locally and on remote:
+
+   ```bash
+   git tag -l 'v<target>-dev.*' | xargs git tag -d
+   git tag -l 'v<target>-dev.*' | xargs -I{} git push origin --delete {}
+   ```
+
+   Note: run local deletion first. If the remote tags were already deleted in step 2,
+   the remote deletion will report "not found" — this is harmless.
+
+#### 0f. Commit, PR, and Tag Phase Release
+
+1. **Create a branch, commit, and push** the closeout changes (CHANGELOG consolidation,
+   document updates):
+
+   ```bash
+   git checkout -b phase-closeout
+   git add .
+   git commit -m "<message>"
+   git push -u origin phase-closeout
+   ```
+
+2. **Create a PR** for the closeout:
+
+   ```bash
+   gh pr create --title "Close out <phase-name>" --body "$(cat <<'EOF'
+   ## Summary
+
+   - Consolidate `v<target>-dev.*` changelog sections into single `v<target>` entry
+   - Clear phase and objective tracking files
+   - Update `_project/README.md` to mark phase complete
+   - Delete dev releases, container images, and tags
+
+   Closes #<final-objective-number>
+   EOF
+   )"
+   ```
+
+3. **After the PR is merged**, sync main and tag the phase release:
+
+   ```bash
+   git checkout main
+   git pull origin main
+   git branch -d phase-closeout
+   git remote prune origin
+   git tag v<target>
+   git push origin v<target>
+   ```
+
+   This triggers the release workflow (if configured) to create the GitHub Release
+   from the consolidated CHANGELOG section.
 
 ---
 
@@ -191,4 +285,5 @@ Create `_project/phase.md` with:
 - Each Objective has enough context to drive an Objective Planning session
 - `_project/phase.md` created with phase scope, objectives table (serving as objective roadmap), and version target
 - Previous phase cleaned up (if transitioning)
+- Previous phase released (if transitioning): milestone closed, CHANGELOG consolidated, dev releases and tags cleaned up, phase version tagged
 - Incomplete work from the previous phase explicitly handled (transitioned or moved to backlog)

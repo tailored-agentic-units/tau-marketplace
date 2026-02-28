@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Remove skill-creator skill — capability now provided by Anthropic's official plugin, skill-creator from the claude-plugins-official marketplace
+- Add Step 0 (Sync Main) to dev and phase release workflows for automatic branch cleanup after merged PRs
+- Expand phase closeout from 3 sub-steps to 6: add milestone closing, CHANGELOG consolidation, dev release/tag/image cleanup, and phase release tagging
+
 ## 0.1.1
 
 - Fix `gh issue create` commands using unsupported `--json` output flag — capture stdout directly instead
