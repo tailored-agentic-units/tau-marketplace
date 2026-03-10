@@ -242,12 +242,14 @@ EOF
 
 # Assign the Objective issue type
 ISSUE_ID=$(gh issue view "$OBJECTIVE_URL" --json id --jq '.id')
-gh api graphql -f query='
+gh api graphql -f query="$(cat <<'GRAPHQL'
 mutation($issueId: ID!, $typeId: ID!) {
   updateIssueIssueType(input: { issueId: $issueId, issueTypeId: $typeId }) {
     issue { number issueType { name } }
   }
-}' -f issueId="$ISSUE_ID" -f typeId="<objective-type-id>"
+}
+GRAPHQL
+)" -f issueId="$ISSUE_ID" -f typeId="<objective-type-id>"
 ```
 
 ### 5. Update `_project/phase.md`
