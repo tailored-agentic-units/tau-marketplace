@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Fix GraphQL queries in dev-workflow objective and phase commands — replace inline `-f query='...'` with heredoc syntax to prevent `$` variable mangling in Claude Code's Bash tool
+
 ## 0.1.2
 
 - Remove skill-creator skill — capability now provided by Anthropic's official plugin, skill-creator from the claude-plugins-official marketplace

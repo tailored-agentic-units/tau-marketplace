@@ -53,17 +53,20 @@ Concept Development → Phase Planning → Objective Planning → Task Execution
   PARENT_ID=$(gh issue view <previous-objective-number> --repo <owner>/<primary-repo> --json id --jq '.id')
   gh api graphql \
     -H "GraphQL-Features: sub_issues" \
-    -f query='query($id: ID!) {
-      node(id: $id) {
-        ... on Issue {
-          number title state
-          subIssues(first: 50) {
-            nodes { number title state url repository { nameWithOwner } }
-          }
-          subIssuesSummary { total completed percentCompleted }
+    -f query="$(cat <<'GRAPHQL'
+  query($id: ID!) {
+    node(id: $id) {
+      ... on Issue {
+        number title state
+        subIssues(first: 50) {
+          nodes { number title state url repository { nameWithOwner } }
         }
+        subIssuesSummary { total completed percentCompleted }
       }
-    }' -f id="$PARENT_ID"
+    }
+  }
+  GRAPHQL
+  )" -f id="$PARENT_ID"
   ```
 
 - Present status summary to user:
@@ -84,11 +87,14 @@ Concept Development → Phase Planning → Objective Planning → Task Execution
     # Remove sub-issue from parent
     gh api graphql \
       -H "GraphQL-Features: sub_issues" \
-      -f query='mutation($parentId: ID!, $childId: ID!) {
-        removeSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
-          subIssue { number title }
-        }
-      }' -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
+      -f query="$(cat <<'GRAPHQL'
+    mutation($parentId: ID!, $childId: ID!) {
+      removeSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
+        subIssue { number title }
+      }
+    }
+    GRAPHQL
+    )" -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
 
     # Update phase to Backlog on project board
     gh project item-edit --id <item-id> --project-id "$PROJECT_ID" \
@@ -167,22 +173,27 @@ EOF
 
 # Assign the Task issue type (or Bug for defect fixes)
 CHILD_ID=$(gh issue view "$CHILD_URL" --json id --jq '.id')
-gh api graphql -f query='
+gh api graphql -f query="$(cat <<'GRAPHQL'
 mutation($issueId: ID!, $typeId: ID!) {
   updateIssueIssueType(input: { issueId: $issueId, issueTypeId: $typeId }) {
     issue { number issueType { name } }
   }
-}' -f issueId="$CHILD_ID" -f typeId="<task-type-id>"
+}
+GRAPHQL
+)" -f issueId="$CHILD_ID" -f typeId="<task-type-id>"
 
 # Link to the Objective
 PARENT_ID=$(gh issue view <objective-number> --repo <owner>/<primary-repo> --json id --jq '.id')
 gh api graphql \
   -H "GraphQL-Features: sub_issues" \
-  -f query='mutation($parentId: ID!, $childId: ID!) {
-    addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
-      subIssue { number title url }
-    }
-  }' -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
+  -f query="$(cat <<'GRAPHQL'
+mutation($parentId: ID!, $childId: ID!) {
+  addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
+    subIssue { number title url }
+  }
+}
+GRAPHQL
+)" -f parentId="$PARENT_ID" -f childId="$CHILD_ID"
 ```
 
 **Re-parent carry-forward sub-issues** (if any from Step 0b):
@@ -191,11 +202,14 @@ gh api graphql \
 # Atomically move sub-issue from old objective to new objective
 gh api graphql \
   -H "GraphQL-Features: sub_issues" \
-  -f query='mutation($parentId: ID!, $childId: ID!) {
-    addSubIssue(input: {issueId: $parentId, subIssueId: $childId, replaceParent: true}) {
-      subIssue { number title url }
-    }
-  }' -f parentId="$NEW_OBJECTIVE_ID" -f childId="$CARRY_FORWARD_ID"
+  -f query="$(cat <<'GRAPHQL'
+mutation($parentId: ID!, $childId: ID!) {
+  addSubIssue(input: {issueId: $parentId, subIssueId: $childId, replaceParent: true}) {
+    subIssue { number title url }
+  }
+}
+GRAPHQL
+)" -f parentId="$NEW_OBJECTIVE_ID" -f childId="$CARRY_FORWARD_ID"
 ```
 
 **Close previous Objective** (after all carry-forward sub-issues are re-parented):
