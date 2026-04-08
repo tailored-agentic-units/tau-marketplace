@@ -55,7 +55,7 @@ Add a new versioned section at the top of each affected plugin's `plugins/[plugi
 - [Description of change 2]
 ```
 
-The heading uses bare semver (e.g., `## 0.1.1`) — no `v` prefix, no plugin prefix. This format is required for compatibility with the release workflow.
+The heading uses bracketed semver with `v` prefix (e.g., `## [v0.1.1]`). This format is required for compatibility with `parse-changelog` used by the release workflow.
 
 ### Step 7: Commit, Push, and PR
 

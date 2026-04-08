@@ -67,7 +67,7 @@ tau-marketplace/
 
 - Each plugin has a version in `plugins/[plugin]/.claude-plugin/plugin.json`
 - Each plugin has its own `CHANGELOG.md` at `plugins/[plugin]/CHANGELOG.md`
-- CHANGELOG headings use bare semver: `## 0.1.0` (no `v` prefix, no plugin prefix)
+- CHANGELOG headings use bracketed semver: `## [v0.1.0]` (required by `parse-changelog`)
 - Tags use the format: `[plugin]/v[major].[minor].[patch]` (e.g., `dev-workflow/v0.1.0`)
 - The release workflow extracts the plugin prefix from the tag and reads the corresponding plugin's CHANGELOG
 
