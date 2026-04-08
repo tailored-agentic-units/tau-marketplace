@@ -46,7 +46,7 @@ Bump the version in `plugins/[plugin]/.claude-plugin/plugin.json` for each affec
 
 ### Step 6: CHANGELOG Entry
 
-Add a new versioned section at the top of `CHANGELOG.md` (below the `# Changelog` heading):
+Add a new versioned section at the top of each affected plugin's `plugins/[plugin]/CHANGELOG.md` (below the `# Changelog` heading):
 
 ```markdown
 ## [new-version]
@@ -55,7 +55,7 @@ Add a new versioned section at the top of `CHANGELOG.md` (below the `# Changelog
 - [Description of change 2]
 ```
 
-The heading uses bare semver (e.g., `## 0.0.8`) — no `v` prefix, no plugin prefix. This format is required for compatibility with the release workflow.
+The heading uses bare semver (e.g., `## 0.1.1`) — no `v` prefix, no plugin prefix. This format is required for compatibility with the release workflow.
 
 ### Step 7: Commit, Push, and PR
 

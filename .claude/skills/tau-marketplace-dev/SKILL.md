@@ -35,21 +35,41 @@ tau-marketplace/
 ├── .github/
 │   └── workflows/
 │       └── release.yml            # Tag-triggered release automation
-├── CHANGELOG.md                   # Release notes (heading format: ## [version])
 ├── plugins/
-│   └── tau/
-│       ├── .claude-plugin/
-│       │   └── plugin.json        # Version source of truth
-│       └── skills/                # Plugin skills
+│   ├── dev-workflow/
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── CHANGELOG.md
+│   │   └── skills/dev-workflow/
+│   ├── github-cli/
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── CHANGELOG.md
+│   │   └── skills/github-cli/
+│   ├── go-patterns/
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── CHANGELOG.md
+│   │   └── skills/go-patterns/
+│   ├── project-management/
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── CHANGELOG.md
+│   │   └── skills/project-management/
+│   ├── tau-overview/
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── CHANGELOG.md
+│   │   └── skills/tau-overview/
+│   └── kernel/
+│       ├── .claude-plugin/plugin.json
+│       ├── CHANGELOG.md
+│       └── skills/kernel/
 └── README.md
 ```
 
 ## Versioning Convention
 
 - Each plugin has a version in `plugins/[plugin]/.claude-plugin/plugin.json`
-- CHANGELOG headings use bare semver: `## 0.0.8` (no `v` prefix, no plugin prefix)
-- Tags use the format: `[plugin]-v[major].[minor].[patch]` (e.g., `tau-v0.0.8`)
-- The release workflow extracts the plugin prefix from the tag and matches it to the CHANGELOG heading
+- Each plugin has its own `CHANGELOG.md` at `plugins/[plugin]/CHANGELOG.md`
+- CHANGELOG headings use bare semver: `## 0.1.0` (no `v` prefix, no plugin prefix)
+- Tags use the format: `[plugin]/v[major].[minor].[patch]` (e.g., `dev-workflow/v0.1.0`)
+- The release workflow extracts the plugin prefix from the tag and reads the corresponding plugin's CHANGELOG
 
 ## Session Types
 

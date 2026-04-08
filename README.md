@@ -6,26 +6,49 @@ Plugin marketplace for the [Tailored Agentic Units](https://github.com/tailored-
 
 | Plugin | Description |
 |--------|-------------|
-| [tau](./plugins/tau/) | Core plugin — development workflows, GitHub operations, Go patterns, project management, and kernel usage guides |
+| [dev-workflow](./plugins/dev-workflow/) | Structured development sessions: concept, planning, task execution, review, release |
+| [github-cli](./plugins/github-cli/) | GitHub CLI operations: issues, PRs, releases, labels, secrets, sub-issues |
+| [go-patterns](./plugins/go-patterns/) | Go design patterns: interfaces, error handling, package structure, configuration |
+| [project-management](./plugins/project-management/) | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog |
+| [tau-overview](./plugins/tau-overview/) | TAU ecosystem overview and conventions |
+| [kernel](./plugins/kernel/) | TAU kernel usage guide: core types, agent, orchestrate, runtime |
+
+## Migrating from the monolithic `tau` plugin
+
+If you have the old `tau` plugin installed, remove it before installing standalone plugins:
+
+```bash
+claude plugin remove tau@tau-marketplace
+claude plugin marketplace update
+```
+
+Then update `.claude/settings.json` permissions — replace `Skill(tau:skill-name)` with `Skill(plugin:skill)` (e.g., `Skill(tau:dev-workflow)` becomes `Skill(dev-workflow:dev-workflow)`).
 
 ## Installation
 
 ```bash
 claude plugin marketplace add tailored-agentic-units/tau-marketplace
-claude plugin install tau@tau-marketplace
+
+# Install the plugins you need
+claude plugin install dev-workflow@tau-marketplace
+claude plugin install github-cli@tau-marketplace
+claude plugin install go-patterns@tau-marketplace
+claude plugin install project-management@tau-marketplace
+claude plugin install tau-overview@tau-marketplace
+claude plugin install kernel@tau-marketplace
 ```
 
 ## Update
 
 ```bash
 claude plugin marketplace update
-claude plugin update tau@tau-marketplace
+claude plugin update dev-workflow@tau-marketplace
 ```
 
 ## Remove
 
 ```bash
-claude plugin remove tau@tau-marketplace
+claude plugin remove dev-workflow@tau-marketplace
 claude plugin marketplace remove tailored-agentic-units/tau-marketplace
 ```
 
@@ -33,23 +56,23 @@ claude plugin marketplace remove tailored-agentic-units/tau-marketplace
 
 ### 1. Configure skill permissions
 
-Plugin skills are namespaced with `tau:`. Add the skills your project needs to the `permissions.allow` array:
+Add the skills your project needs to the `permissions.allow` array:
 
 ```json
 {
   "permissions": {
     "allow": [
-      "Skill(tau:dev-workflow)",
-      "Skill(tau:github-cli)",
-      "Skill(tau:go-patterns)",
-      "Skill(tau:kernel)",
-      "Skill(tau:project-management)"
+      "Skill(dev-workflow:dev-workflow)",
+      "Skill(github-cli:github-cli)",
+      "Skill(go-patterns:go-patterns)",
+      "Skill(kernel:kernel)",
+      "Skill(project-management:project-management)"
     ]
   }
 }
 ```
 
-Only include the skills relevant to your project. For example, a repository that doesn't use the TAU kernel would omit `Skill(tau:kernel)`.
+Only include the skills relevant to your project. For example, a repository that doesn't use the TAU kernel would omit `Skill(kernel:kernel)`.
 
 ### 2. Configure tool permissions
 
@@ -87,11 +110,11 @@ Here is a full `.claude/settings.json` for a TAU Go library project:
       "Bash(gh project item-list*)",
       "Bash(gh project list*)",
       "Bash(gh project view*)",
-      "Skill(tau:dev-workflow)",
-      "Skill(tau:github-cli)",
-      "Skill(tau:go-patterns)",
-      "Skill(tau:kernel)",
-      "Skill(tau:project-management)"
+      "Skill(dev-workflow:dev-workflow)",
+      "Skill(github-cli:github-cli)",
+      "Skill(go-patterns:go-patterns)",
+      "Skill(kernel:kernel)",
+      "Skill(project-management:project-management)"
     ]
   }
 }
@@ -101,9 +124,7 @@ Here is a full `.claude/settings.json` for a TAU Go library project:
 
 Skills load automatically based on conversational context. When Claude detects relevant triggers (e.g., discussing Go interface design, creating a GitHub release, or managing project boards), it loads the appropriate skill to provide specialized guidance and commands.
 
-User-invocable skills can also be triggered directly with slash commands using the `tau:` namespace prefix (e.g., `/tau:dev-workflow`, `/tau:github-cli`).
-
-See the [tau plugin README](./plugins/tau/) for a detailed breakdown of available skills and their capabilities.
+User-invocable skills can also be triggered directly with slash commands (e.g., `/dev-workflow:dev-workflow`, `/github-cli:github-cli`).
 
 ## Development
 
@@ -122,12 +143,12 @@ tau-marketplace/
 ├── .github/
 │   └── workflows/
 │       └── release.yml            # Tag-triggered release automation
-├── CHANGELOG.md                   # Release notes
 ├── plugins/
-│   └── tau/                       # Core TAU plugin
-│       ├── .claude-plugin/
-│       │   └── plugin.json        # Plugin manifest (version source of truth)
-│       ├── .lsp.json              # Language server configuration
-│       └── skills/                # 6 skills (see plugin README)
+│   ├── dev-workflow/              # Structured development sessions
+│   ├── github-cli/                # GitHub CLI operations
+│   ├── go-patterns/               # Go design patterns
+│   ├── kernel/                    # TAU kernel usage guide
+│   ├── project-management/        # GitHub Projects v2
+│   └── tau-overview/              # Ecosystem overview
 └── README.md
 ```

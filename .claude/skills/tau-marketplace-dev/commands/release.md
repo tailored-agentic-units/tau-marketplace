@@ -24,46 +24,46 @@ Alternatively, read `plugins/[plugin]/.claude-plugin/plugin.json` directly to ge
 
 ### Step 2: Verify CHANGELOG
 
-For each affected plugin, verify that `CHANGELOG.md` has a heading matching the new version:
+For each affected plugin, verify that `plugins/[plugin]/CHANGELOG.md` has a heading matching the new version:
 
 ```
 ## [version]
 ```
 
-For example, if the plugin version is `0.0.8`, verify that `## 0.0.8` exists in the CHANGELOG.
+For example, if the plugin version is `0.1.1`, verify that `## 0.1.1` exists in `plugins/[plugin]/CHANGELOG.md`.
 
 ### Step 3: Create and Push Tags
 
 For each affected plugin, create and push a tag:
 
 ```bash
-# Tag format: [plugin]-v[version]
-# Example: tau-v0.0.8
-git tag tau-v0.0.8
-git push origin tau-v0.0.8
+# Tag format: [plugin]/v[version]
+# Example: dev-workflow/v0.1.1
+git tag dev-workflow/v0.1.1
+git push origin dev-workflow/v0.1.1
 ```
 
 If multiple plugins are affected, create one tag per plugin:
 
 ```bash
-git tag tau-v0.0.8
-git tag other-plugin-v1.0.0
-git push origin tau-v0.0.8
-git push origin other-plugin-v1.0.0
+git tag dev-workflow/v0.1.1
+git tag github-cli/v0.1.1
+git push origin dev-workflow/v0.1.1
+git push origin github-cli/v0.1.1
 ```
 
 ### Step 4: Verify Release
 
 The tag push triggers `.github/workflows/release.yml`, which:
 
-1. Extracts the plugin prefix from the tag (e.g., `tau` from `tau-v0.0.8`)
-2. Uses `parse-changelog` to extract the matching section from `CHANGELOG.md`
+1. Extracts the plugin prefix from the tag (e.g., `dev-workflow` from `dev-workflow/v0.1.1`)
+2. Uses `parse-changelog` to extract the matching section from `plugins/dev-workflow/CHANGELOG.md`
 3. Creates a GitHub Release with the extracted notes
 
 Verify the release was created:
 
 ```bash
-gh release view tau-v0.0.8
+gh release view dev-workflow/v0.1.1
 ```
 
 ## Outcomes

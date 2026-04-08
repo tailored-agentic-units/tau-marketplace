@@ -8,9 +8,34 @@
   },
   "plugins": [
     {
-      "name": "tau",
-      "source": "./plugins/tau",
-      "description": "Core plugin for the TAU ecosystem"
+      "name": "dev-workflow",
+      "source": "./plugins/dev-workflow",
+      "description": "Structured development sessions"
+    },
+    {
+      "name": "github-cli",
+      "source": "./plugins/github-cli",
+      "description": "GitHub CLI operations"
+    },
+    {
+      "name": "go-patterns",
+      "source": "./plugins/go-patterns",
+      "description": "Go design patterns for TAU ecosystem"
+    },
+    {
+      "name": "project-management",
+      "source": "./plugins/project-management",
+      "description": "GitHub Projects v2 management"
+    },
+    {
+      "name": "tau-overview",
+      "source": "./plugins/tau-overview",
+      "description": "TAU ecosystem overview and conventions"
+    },
+    {
+      "name": "kernel",
+      "source": "./plugins/kernel",
+      "description": "TAU kernel usage guide"
     }
   ]
 }

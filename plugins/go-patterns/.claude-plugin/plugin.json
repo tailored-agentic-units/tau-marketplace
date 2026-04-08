@@ -1,0 +1,11 @@
+{
+  "name": "go-patterns",
+  "description": "Go design patterns for the TAU ecosystem: interfaces, error handling, package structure, configuration",
+  "version": "0.1.0",
+  "homepage": "https://github.com/tailored-agentic-units/tau-marketplace",
+  "repository": "https://github.com/tailored-agentic-units/tau-marketplace",
+  "author": {
+    "name": "tailored-agentic-units",
+    "url": "https://github.com/tailored-agentic-units"
+  }
+}

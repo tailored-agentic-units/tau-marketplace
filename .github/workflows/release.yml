@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "*-v*"
+      - '*/v*'
 
 permissions:
   contents: write
@@ -16,16 +16,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract prefix from tag
-        id: meta
+      - name: Determine plugin from tag
+        id: plugin
         run: |
           TAG="${GITHUB_REF_NAME}"
-          PREFIX="${TAG%%-v*}"
-          echo "prefix=${PREFIX}" >> "$GITHUB_OUTPUT"
+          PREFIX="${TAG%/v*}"
+          echo "prefix=$PREFIX/" >> "$GITHUB_OUTPUT"
+          echo "changelog=plugins/$PREFIX/CHANGELOG.md" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
         uses: taiki-e/create-gh-release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          prefix: ${{ steps.meta.outputs.prefix }}-
-          changelog: CHANGELOG.md
+          prefix: ${{ steps.plugin.outputs.prefix }}
+          changelog: ${{ steps.plugin.outputs.changelog }}
