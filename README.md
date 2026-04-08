@@ -24,6 +24,30 @@ claude plugin marketplace update
 
 Then update `.claude/settings.json` permissions — replace `Skill(tau:skill-name)` with `Skill(plugin:skill)` (e.g., `Skill(tau:dev-workflow)` becomes `Skill(dev-workflow:dev-workflow)`).
 
+You'll also want to remove the cached marketplace plugin install:
+
+```bash
+rm -rf ~/.claude/plugins/marketplaces/tau-marketplace
+```
+
+You'll also want to remove any of the following from ~/.claude/settings.json:
+
+```json
+{
+  "enabledPlugins": {
+    "<plugin>@tau-marketplace": true // where <plugin> is any value prefixing @tau-marketplace
+  },
+  "extraKnownMarketplaces": {
+    "tau-marketplace": { // remove this whole object
+      "source": {
+        "source": "github",
+        "repo": "tailored-agentic-units/tau-marketplace"
+      }
+    }
+  }
+}
+```
+
 ## Installation
 
 ```bash
