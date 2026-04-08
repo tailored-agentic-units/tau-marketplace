@@ -11,7 +11,7 @@ Plugin marketplace for the [Tailored Agentic Units](https://github.com/tailored-
 | [go-patterns](./plugins/go-patterns/) | Go design patterns: interfaces, error handling, package structure, configuration |
 | [project-management](./plugins/project-management/) | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog |
 | [iterative-dev](./plugins/iterative-dev/) | Lightweight iterative development sessions with issue-driven lifecycle |
-| [tau-overview](./plugins/tau-overview/) | TAU ecosystem overview and conventions |
+
 
 
 ## Installation
@@ -25,7 +25,7 @@ claude plugin install github-cli@tau-marketplace
 claude plugin install go-patterns@tau-marketplace
 claude plugin install project-management@tau-marketplace
 claude plugin install iterative-dev@tau-marketplace
-claude plugin install tau-overview@tau-marketplace
+
 ```
 
 ## Update
@@ -175,6 +175,6 @@ tau-marketplace/
 │   ├── go-patterns/               # Go design patterns
 │   ├── iterative-dev/             # Lightweight iterative development
 │   ├── project-management/        # GitHub Projects v2
-│   └── tau-overview/              # Ecosystem overview
+
 └── README.md
 ```

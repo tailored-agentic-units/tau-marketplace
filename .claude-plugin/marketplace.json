@@ -28,11 +28,6 @@
       "description": "GitHub Projects v2 management"
     },
     {
-      "name": "tau-overview",
-      "source": "./plugins/tau-overview",
-      "description": "TAU ecosystem overview and conventions"
-    },
-    {
       "name": "iterative-dev",
       "source": "./plugins/iterative-dev",
       "description": "Lightweight iterative development sessions"

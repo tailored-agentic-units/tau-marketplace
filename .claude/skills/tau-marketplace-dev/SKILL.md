@@ -56,10 +56,7 @@ tau-marketplace/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── CHANGELOG.md
 │   │   └── skills/project-management/
-│   ├── tau-overview/
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── CHANGELOG.md
-│   │   └── skills/tau-overview/
+
 
 └── README.md
 ```
