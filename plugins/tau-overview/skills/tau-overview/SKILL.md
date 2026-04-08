@@ -21,7 +21,7 @@ Skills that are installed load automatically based on context:
 | github-cli:github-cli | GitHub repository operations via gh CLI (issues, PRs, releases, labels, secrets, sub-issues) |
 | go-patterns:go-patterns | Go design patterns: interfaces, error handling, package structure, configuration |
 | project-management:project-management | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog management |
-| kernel:kernel | Building with the TAU kernel: core types, agent, orchestrate, runtime architecture |
+
 
 ### Cross-Skill Integration
 

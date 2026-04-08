@@ -12,7 +12,6 @@ Plugin marketplace for the [Tailored Agentic Units](https://github.com/tailored-
 | [project-management](./plugins/project-management/) | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog |
 | [iterative-dev](./plugins/iterative-dev/) | Lightweight iterative development sessions with issue-driven lifecycle |
 | [tau-overview](./plugins/tau-overview/) | TAU ecosystem overview and conventions |
-| [kernel](./plugins/kernel/) | TAU kernel usage guide: core types, agent, orchestrate, runtime |
 
 
 ## Installation
@@ -27,7 +26,6 @@ claude plugin install go-patterns@tau-marketplace
 claude plugin install project-management@tau-marketplace
 claude plugin install iterative-dev@tau-marketplace
 claude plugin install tau-overview@tau-marketplace
-claude plugin install kernel@tau-marketplace
 ```
 
 ## Update
@@ -94,14 +92,13 @@ Add the skills your project needs to the `permissions.allow` array:
       "Skill(github-cli:github-cli)",
       "Skill(go-patterns:go-patterns)",
       "Skill(iterative-dev:iterative-dev)",
-      "Skill(kernel:kernel)",
       "Skill(project-management:project-management)"
     ]
   }
 }
 ```
 
-Only include the skills relevant to your project. For example, a repository that doesn't use the TAU kernel would omit `Skill(kernel:kernel)`.
+Only include the skills relevant to your project.
 
 ### 2. Configure tool permissions
 
@@ -143,7 +140,6 @@ Here is a full `.claude/settings.json` for a TAU Go library project:
       "Skill(github-cli:github-cli)",
       "Skill(go-patterns:go-patterns)",
       "Skill(iterative-dev:iterative-dev)",
-      "Skill(kernel:kernel)",
       "Skill(project-management:project-management)"
     ]
   }
@@ -178,7 +174,6 @@ tau-marketplace/
 │   ├── github-cli/                # GitHub CLI operations
 │   ├── go-patterns/               # Go design patterns
 │   ├── iterative-dev/             # Lightweight iterative development
-│   ├── kernel/                    # TAU kernel usage guide
 │   ├── project-management/        # GitHub Projects v2
 │   └── tau-overview/              # Ecosystem overview
 └── README.md

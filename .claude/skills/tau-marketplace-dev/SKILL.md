@@ -60,10 +60,7 @@ tau-marketplace/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── CHANGELOG.md
 │   │   └── skills/tau-overview/
-│   └── kernel/
-│       ├── .claude-plugin/plugin.json
-│       ├── CHANGELOG.md
-│       └── skills/kernel/
+
 └── README.md
 ```
 
