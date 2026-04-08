@@ -33,6 +33,11 @@
       "description": "TAU ecosystem overview and conventions"
     },
     {
+      "name": "iterative-dev",
+      "source": "./plugins/iterative-dev",
+      "description": "Lightweight iterative development sessions"
+    },
+    {
       "name": "kernel",
       "source": "./plugins/kernel",
       "description": "TAU kernel usage guide"

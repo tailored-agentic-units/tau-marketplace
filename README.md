@@ -10,43 +10,10 @@ Plugin marketplace for the [Tailored Agentic Units](https://github.com/tailored-
 | [github-cli](./plugins/github-cli/) | GitHub CLI operations: issues, PRs, releases, labels, secrets, sub-issues |
 | [go-patterns](./plugins/go-patterns/) | Go design patterns: interfaces, error handling, package structure, configuration |
 | [project-management](./plugins/project-management/) | GitHub Projects v2: project boards, phases, objectives, cross-repo backlog |
+| [iterative-dev](./plugins/iterative-dev/) | Lightweight iterative development sessions with issue-driven lifecycle |
 | [tau-overview](./plugins/tau-overview/) | TAU ecosystem overview and conventions |
 | [kernel](./plugins/kernel/) | TAU kernel usage guide: core types, agent, orchestrate, runtime |
 
-## Migrating from the monolithic `tau` plugin
-
-If you have the old `tau` plugin installed, remove it before installing standalone plugins:
-
-```bash
-claude plugin remove tau@tau-marketplace
-claude plugin marketplace update
-```
-
-Then update `.claude/settings.json` permissions — replace `Skill(tau:skill-name)` with `Skill(plugin:skill)` (e.g., `Skill(tau:dev-workflow)` becomes `Skill(dev-workflow:dev-workflow)`).
-
-You'll also want to remove the cached marketplace plugin install:
-
-```bash
-rm -rf ~/.claude/plugins/marketplaces/tau-marketplace
-```
-
-You'll also want to remove any of the following from ~/.claude/settings.json:
-
-```json
-{
-  "enabledPlugins": {
-    "<plugin>@tau-marketplace": true // where <plugin> is any value prefixing @tau-marketplace
-  },
-  "extraKnownMarketplaces": {
-    "tau-marketplace": { // remove this whole object
-      "source": {
-        "source": "github",
-        "repo": "tailored-agentic-units/tau-marketplace"
-      }
-    }
-  }
-}
-```
 
 ## Installation
 
@@ -58,6 +25,7 @@ claude plugin install dev-workflow@tau-marketplace
 claude plugin install github-cli@tau-marketplace
 claude plugin install go-patterns@tau-marketplace
 claude plugin install project-management@tau-marketplace
+claude plugin install iterative-dev@tau-marketplace
 claude plugin install tau-overview@tau-marketplace
 claude plugin install kernel@tau-marketplace
 ```
@@ -76,6 +44,42 @@ claude plugin remove dev-workflow@tau-marketplace
 claude plugin marketplace remove tailored-agentic-units/tau-marketplace
 ```
 
+## Migrating from the monolithic `tau` plugin
+
+If you have the old `tau` plugin installed, remove it before installing standalone plugins:
+
+```bash
+claude plugin remove tau@tau-marketplace
+```
+
+Then update any `.claude/settings.json` permissions — replace `Skill(tau:skill-name)` with `Skill(plugin:skill)` (e.g., `Skill(tau:dev-workflow)` becomes `Skill(dev-workflow:dev-workflow)`).
+
+Remove the cached marketplace plugin install:
+
+```bash
+rm -rf ~/.claude/plugins/marketplaces/tau-marketplace
+```
+
+Remove any of the following from `~/.claude/settings.json`:
+
+```json
+{
+  "enabledPlugins": {
+    "<plugin>@tau-marketplace": true // remove any tau-marketplace plugins
+  },
+  "extraKnownMarketplaces": {
+    "tau-marketplace": { // remove this whole object
+      "source": {
+        "source": "github",
+        "repo": "tailored-agentic-units/tau-marketplace"
+      }
+    }
+  }
+}
+```
+
+Follow the [Installation](#installation) instructions above to re-install the marketplace and install any of the skills that you use.
+
 ## Configuration
 
 ### 1. Configure skill permissions
@@ -89,6 +93,7 @@ Add the skills your project needs to the `permissions.allow` array:
       "Skill(dev-workflow:dev-workflow)",
       "Skill(github-cli:github-cli)",
       "Skill(go-patterns:go-patterns)",
+      "Skill(iterative-dev:iterative-dev)",
       "Skill(kernel:kernel)",
       "Skill(project-management:project-management)"
     ]
@@ -137,6 +142,7 @@ Here is a full `.claude/settings.json` for a TAU Go library project:
       "Skill(dev-workflow:dev-workflow)",
       "Skill(github-cli:github-cli)",
       "Skill(go-patterns:go-patterns)",
+      "Skill(iterative-dev:iterative-dev)",
       "Skill(kernel:kernel)",
       "Skill(project-management:project-management)"
     ]
@@ -171,6 +177,7 @@ tau-marketplace/
 │   ├── dev-workflow/              # Structured development sessions
 │   ├── github-cli/                # GitHub CLI operations
 │   ├── go-patterns/               # Go design patterns
+│   ├── iterative-dev/             # Lightweight iterative development
 │   ├── kernel/                    # TAU kernel usage guide
 │   ├── project-management/        # GitHub Projects v2
 │   └── tau-overview/              # Ecosystem overview

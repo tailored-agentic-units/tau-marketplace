@@ -48,6 +48,10 @@ tau-marketplace/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── CHANGELOG.md
 │   │   └── skills/go-patterns/
+│   ├── iterative-dev/
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── CHANGELOG.md
+│   │   └── skills/iterative-dev/
 │   ├── project-management/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── CHANGELOG.md
