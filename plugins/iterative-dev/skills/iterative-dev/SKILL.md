@@ -54,7 +54,16 @@ Each development session is tied to a GitHub issue. The issue body contains the 
 
 ### Role Boundaries
 
-The developer owns source code implementation. The AI owns testing, documentation comments, and project-management artifacts.
+**Developer owns:** production source code, configuration files, infrastructure definitions. Source code is written *without* doc comments — those are added by the AI during closeout.
+
+**AI owns:**
+- **Tests** — creation and maintenance under `tests/` (or the project's equivalent)
+- **Documentation** — repo root `README.md`, project docs (`.claude/project/` or equivalent like `_project/`), `CLAUDE.md`, memory files
+- **Source comments** — godoc/jsdoc/docstrings on exported types, functions, methods; explanatory inline comments where logic is non-obvious
+- **Project-management artifacts** — commit messages, PR bodies, issue creation/edits, branch labels
+- **Implementation guides** — the reference document the developer follows
+
+The boundary is concrete: if a line lives in a `.go`/`.ts`/`.py` source file, the developer writes it (without comments); if it lives anywhere else — docs, comments, tests, prose — the AI writes it.
 
 During init sessions, the AI creates an implementation guide after plan mode. The developer executes the guide. The AI resumes for testing, validation, documentation, and closeout.
 
@@ -63,10 +72,17 @@ During init sessions, the AI creates an implementation guide after plan mode. Th
 Created during init sessions at `.claude/context/guides/[issue-number]-[slug].md`. Contains problem context, architecture approach, and step-by-step implementation. Archived to `.claude/context/guides/.archive/` at session closeout.
 
 Guide conventions:
+
 - **Existing files**: show incremental changes only (never replace entire files)
-- **New files**: provide complete implementation
-- **Exclude**: godoc comments, unit tests, project-management updates (AI responsibilities handled later)
-- **Include**: meaningful comments that clarify intent or integration context
+- **New files**: provide the structural skeleton — types, function signatures, function bodies — *without* doc comments. Code blocks should read as design intent, not as final source.
+- **Exclude entirely from guide code blocks:**
+  - Godoc / jsdoc / docstrings — the AI adds these during closeout
+  - Test code — the AI writes tests during closeout
+  - Documentation updates of any kind — root `README.md`, project docs, `CLAUDE.md`, memory files all stay out of the guide
+  - Project-management artifacts — issue rewrites, label changes, commit messages, PR bodies
+- **Guide-level commentary belongs in the guide's prose** between code blocks. Explain how a piece fits the larger picture, reference other steps, flag integration concerns. This commentary lives in the guide only — it MUST NOT be transcribed into source files as comments.
+
+**Litmus test:** if a line would still belong in the file six months later via `git blame`, it's source code (the developer writes it during execution, the AI adds doc comments during closeout). If it's only useful *while reading the guide*, it stays in the guide as prose (the AI writes it once when authoring the guide).
 
 ### Branching
 

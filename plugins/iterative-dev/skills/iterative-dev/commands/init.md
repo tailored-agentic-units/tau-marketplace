@@ -102,11 +102,15 @@ Each remedial step is numbered R1, R2, etc.]
 **File change conventions:**
 
 - **Existing files**: Show incremental changes only (what is being added or modified). Never replace entire existing files.
-- **New files**: Provide complete implementation.
-- **No godoc comments.** Added by the AI during closeout.
-- **No unit tests.** Test creation and maintenance is an AI responsibility during closeout.
-- **No project-management updates.** Updates to `.claude/project/` are handled during closeout.
-- **Meaningful comments only.** Comments that help the developer understand intent or integration context are encouraged.
+- **New files**: Provide the structural skeleton — types, function signatures, function bodies — *without* doc comments. Code blocks should read as design intent, not as final source.
+- **Exclude entirely from guide code blocks:**
+  - Godoc / jsdoc / docstrings — the AI adds these during closeout
+  - Test code — the AI writes tests during closeout
+  - Documentation updates of any kind — root `README.md`, project docs, `CLAUDE.md`, memory files all stay out of the guide
+  - Project-management artifacts — issue rewrites, label changes, commit messages, PR bodies
+- **Guide-level commentary belongs in the guide's prose** between code blocks. Explain how a piece fits the larger picture, reference other steps, flag integration concerns. This commentary lives in the guide only — it MUST NOT be transcribed into source files as comments.
+
+**Litmus test:** if a line would still belong in the file six months later via `git blame`, it's source code (the developer writes it during execution, the AI adds doc comments during closeout). If it's only useful *while reading the guide*, it stays in the guide as prose (the AI writes it once when authoring the guide).
 
 **After writing the guide, stop and wait.** The developer executes the guide independently. The AI remains available for mentorship, clarification, and adjustments. If blockers are discovered, add a **Remediation** section to the guide (numbered R1, R2, etc.).
 
@@ -128,19 +132,24 @@ Control returns to the AI when the developer signals that implementation is comp
 
 ### Documentation
 
-- Add documentation comments to exported types, functions, and methods
-- Document non-obvious behavior or design decisions
+This is where godoc/jsdoc/docstring comments enter the source files. The implementation guide deliberately omits them so guide code blocks read as design intent; the AI adds them now to the actual source.
+
+- Add doc comments to exported types, functions, and methods in every file the session created or substantively modified
+- Document non-obvious behavior, invariants, or design decisions in inline comments where they aid future readers
+- **Do not** add comments that describe decision history ("X chosen over Y because...", "considered Z and rejected"). Decision rationale belongs in commit messages, PR bodies, or design docs — never in source comments
 
 ### Pre-Commit Review
 
-#### Reconcile Project Docs
+#### Reconcile Documentation
 
-Review `.claude/project/` against the session's changes:
-- **`requirements.md`** — check off completed items, add new ones that emerged
-- **`README.md`** — does the vision or directory structure need updating?
-- **Other sub-files** — do architecture, schemas, or configuration docs need revision? Did new concepts emerge that warrant a new sub-file?
+Review the session's full doc surface area for updates:
 
-The goal is that someone reading the project docs after this session sees a coherent, current picture.
+- **Project docs** — `.claude/project/` or the project's equivalent (e.g., `_project/`). Check off completed items in `requirements.md`. Update architecture/schema/configuration docs if structure changed. Add new focused sub-files if new concepts emerged.
+- **Repo root `README.md`** — does the project structure tree, the API surface, the feature list, or the getting-started instructions need updating?
+- **`CLAUDE.md`** — did this session establish new conventions, patterns, principles, or architectural rules that should be captured for future sessions?
+- **Memory files** — did the user surface feedback or a principle that should persist across sessions and projects?
+
+Goal: a reader picking up the project after this session sees a coherent, current picture across all doc surfaces — not just the project directory.
 
 #### Discuss Next Steps
 
