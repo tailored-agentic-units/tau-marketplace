@@ -14,12 +14,6 @@ gh issue view <number> --json title,body,labels
 
 The issue body contains the session's scope, approach, constraints, and acceptance criteria.
 
-### Set Issue Status
-
-```bash
-gh issue edit <number> --add-label "in-progress"
-```
-
 ### Create a Session Branch
 
 ```bash
