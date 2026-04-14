@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.1.2]
+- Remove "Set Issue Status" step from init command — issue labels are the wrong mechanism for session status in a project-agnostic skill (commands/init.md)
+
 ## [v0.1.1]
 - Enumerate AI-owned surfaces in Role Boundaries (SKILL.md)
 - Fix guide conventions to prevent doc comments and integration commentary from leaking into guide code blocks (SKILL.md, commands/init.md)
