@@ -1,7 +1,7 @@
 {
   "name": "go-patterns",
-  "description": "Go design patterns for the TAU ecosystem: interfaces, error handling, package structure, configuration",
-  "version": "0.1.0",
+  "description": "Go design patterns for the TAU ecosystem: project layout, interfaces, error handling, configuration lifecycle, concurrency, registry pattern, CI/CD release workflows, and multi-module workspace coordination",
+  "version": "0.2.0",
   "homepage": "https://github.com/tailored-agentic-units/tau-marketplace",
   "repository": "https://github.com/tailored-agentic-units/tau-marketplace",
   "author": {
