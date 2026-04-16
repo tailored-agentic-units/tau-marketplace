@@ -39,7 +39,7 @@ claude plugin update dev-workflow@tau-marketplace
 
 ```bash
 claude plugin remove dev-workflow@tau-marketplace
-claude plugin marketplace remove tailored-agentic-units/tau-marketplace
+claude plugin marketplace remove tau-marketplace
 ```
 
 ## Migrating from the monolithic `tau` plugin
